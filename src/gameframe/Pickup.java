@@ -11,7 +11,7 @@ public class Pickup extends RBObject
 	// I will write constructors once constructors for RBObject are written.
 	
 	@Override 
-	public int getCount()
+	public static int getCount()
 	{
 		
 	}

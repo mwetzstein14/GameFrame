@@ -134,7 +134,7 @@ public class RBObject extends JGObject
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getCount()
+	public static int getCount()
 	{
 		
 	}
