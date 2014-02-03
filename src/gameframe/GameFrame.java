@@ -4,7 +4,8 @@ import jgame.*;
 import jgame.impl.*;
 import jgame.platform.*;
 
-public abstract class GameFrame extends JGEngine{
+public abstract class GameFrame extends JGEngine
+{
 	
 	public static final double pi = 3.14159;
 	

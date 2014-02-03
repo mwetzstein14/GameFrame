@@ -1,6 +1,7 @@
 package gameframe;
 
-public class InputManager {
+public class InputManager 
+{
 	
 	public static final int PRESS = 1;
 	public static final int HOLD = 2;
@@ -30,7 +31,34 @@ public class InputManager {
 	
 	class Button
 	{
+		private boolean prevState;
 		
+		private boolean Press;
+		private boolean Hold;
+		private boolean Release;
+		
+		private int intID;
+		private char charID;
+		
+		public Button(char id)
+		{
+			
+		}
+		
+		public Button(int id)
+		{
+			
+		}
+		
+		public void updateButton()
+		{
+			
+		}
+		
+		public boolean checkForState(int state)
+		{
+			
+		}
 	}
 
 }
