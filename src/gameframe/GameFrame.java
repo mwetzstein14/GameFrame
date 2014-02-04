@@ -15,9 +15,8 @@ public abstract class GameFrame extends JGEngine
 	
 	public void doFrame()
 	{
-		
+
 	}
-	
 }
 
 

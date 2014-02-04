@@ -37,7 +37,7 @@ public class Vec2D
 	// represented by the angle (angle) and with magnitude mag. 
 	public Vec2D(double angle, double mag)
 	{
-		
+		setVec(angle, mag);
 	}
 	
 	// Sets the vector to be pointing from the origin to the point represented by the Coord.
@@ -60,12 +60,12 @@ public class Vec2D
 	// magnitude mag. 
 	public void setVec(double angle, double mag)
 	{
-		if (useRadians) // Sets direction with radians.
+		if (useRadians) // If using radians:
 		{
 			x_component = Math.cos(angle);
 			y_component = Math.sin(angle);
 		}
-		else // Sets direction with degrees.
+		else // If using degrees:
 		{
 			x_component = Math.cos(Math.toRadians(angle));
 			y_component = Math.sin(Math.toRadians(angle));
@@ -84,21 +84,25 @@ public class Vec2D
 	// Changes the vector to point in the direction represented by angle. Keeps the same magnitude.
 	public void changeDir(double angle)
 	{
-		
+		setVec(angle, getMag());
 	}
 	
 	// Changes the vector to point from the origin to the point represented by Coord.
 	// Keeps the same magnitude.
 	public void changeDir(Coord point)
 	{
+		Vec2D temp = new Vec2D(point);
 		
+		changeDir(temp.getAngle());
 	}
 	
 	// Changes the vector to point in the direction from the point represented by start to the point
 	// represented by end. Keeps the same magnitude. 
 	public void changeDir(Coord loc, Coord target)
 	{
+		Vec2D temp = new Vec2D(loc, target);
 		
+		changeDir(temp.getAngle());
 	}
 	
 	// Multiply the current magnitude by scalar. 
@@ -111,7 +115,7 @@ public class Vec2D
 	// Add angle (argument) to the current angle of the vector's direction. 
 	public void addDir(double angle)
 	{
-		
+		changeDir(getAngle() + angle);
 	}
 	
 	// Performs vector addition. Adds vec to this vector. 
@@ -188,28 +192,28 @@ public class Vec2D
 			
 		if(x_component >= 0.0 && y_component >= 0.0) // If angle really is in first quadrant.
 		{
-			if(useRadians)
+			if(useRadians) // If using radians:
 				return angle;
 			else
 				return Math.toDegrees(angle);
 		}
 		else if(x_component <= 0.0 && y_component >= 0.0) // If angle really is in second quadrant. 
 		{
-			if(useRadians)
+			if(useRadians) // If using radians:
 				return angle + 2.0*(Math.PI/2.0 - angle);
 			else
 				return Math.toDegrees(angle + 2.0*(Math.PI/2.0 - angle));
 		}
 		else if(x_component <= 0.0 && y_component <= 0.0) // If angle really is in third quadrant.
 		{
-			if(useRadians)
+			if(useRadians) // If using radians:
 				return angle + Math.PI;
 			else
 				return Math.toDegrees(angle + Math.PI);
 		}
 		else // If angle really is in fourth quadrant.
 		{
-			if(useRadians)
+			if(useRadians) // If using radians:
 				return 2.0*Math.PI - angle;
 			else
 				return Math.toDegrees(2.0*Math.PI - angle);
@@ -219,27 +223,62 @@ public class Vec2D
 	// Returns the angle between the vector and vec.
 	public double angleWithVec(Vec2D vec)
 	{
-		
+		if(useRadians) // If using radians:
+			return Math.acos(dot(vec)/(getMag()*vec.getMag()));
+		else // If using degrees:
+			return Math.toDegrees(Math.acos(dot(vec)/(getMag()*vec.getMag())));
 	}
 	
 	// Returns the size of the acute angle between the vector and a horizontal line passing through
 	// its tail.
 	public double angleWithHor()
 	{
+		double angle = angleWithVec(new Vec2D(new Coord(1.0, 0.0))); // Angle between this vector and
+		// another vector pointing right.
 		
+		if(useRadians) // If using radians:
+		{
+			if(angle > Math.PI/2.0) // Make angle the acute angle with horizontal if it is not. 
+				return Math.PI - angle;
+			else
+				return angle;
+		}
+		else // If using degrees:
+		{
+			if(angle > 90.0) // Make angle the acute angle with horizontal if it is not.
+				return 180.0 - angle;
+			else
+				return angle;
+		}
 	}
 	
 	// Returns the size of the acute angle between the vector and a vertical line passing through
 	// its tail.
 	public double angleWithVert()
 	{
+		double angle = angleWithVec(new Vec2D(new Coord(0.0, 1.0))); // Angle between this vector and
+		// another vector pointing up.
 		
+		if(useRadians) // If using radians:
+		{
+			if(angle > Math.PI/2.0) // Make angle the acute angle with vertical if it is not. 
+				return Math.PI - angle;
+			else
+				return angle;
+		}
+		else // If using degrees:
+		{
+			if(angle > 90.0) // Make angle the acute angle with vertical if it is not.
+				return 180.0 - angle;
+			else
+				return angle;
+		}
 	}
 	
 	// Returns the dot product between the vector and vec.
 	public double dot(Vec2D vec)
 	{
-		
+		return x_component * vec.getXMag() + y_component * vec.getYMag();
 	}
 	
 	// Returns the magnitude of the cross product between the vector and vec. (Note: cross product
@@ -248,6 +287,6 @@ public class Vec2D
 	// would point out of or into the screen). 
 	public double crossMag(Vec2D vec)
 	{
-		
+		return x_component * vec.getYMag() - y_component * vec.getXMag();
 	}
 }

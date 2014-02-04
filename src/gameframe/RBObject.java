@@ -1,5 +1,7 @@
 package gameframe;
 
+import java.util.ArrayList;
+
 import jgame.JGObject;
 
 public class RBObject extends JGObject 
@@ -20,8 +22,8 @@ public class RBObject extends JGObject
 	private boolean gravitate;
 	private boolean insulate;
 	
-	private int lastTile;
-	private int[] lastFields;
+	public int lastTile;
+	public ArrayList<Integer> lastFields = new ArrayList<Integer>();
 	
 	private boolean bypassRB;
 	private boolean bypassTile;
