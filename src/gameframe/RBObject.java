@@ -15,15 +15,15 @@ public class RBObject extends JGObject
 	private double coeff;
 	private double elastic;
 	
-	private Vec2D velocity;
-	private Vec2D accel;
-	private Vec2D jerk;
+	public Vec2D velocity;
+	public Vec2D accel;
+	public Vec2D jerk;
 	
 	private boolean gravitate;
 	private boolean insulate;
 	
-	public int lastTile;
-	public ArrayList<Integer> lastFields = new ArrayList<Integer>();
+	private int lastTile;
+	private ArrayList<Integer> lastFields = new ArrayList<Integer>();
 	
 	private boolean bypassRB;
 	private boolean bypassTile;
@@ -166,22 +166,12 @@ public class RBObject extends JGObject
 		
 	}
 	
-	public Vec2D getVelocity()
-	{
-		
-	}
-	
-	public Vec2D getAccel()
-	{
-		
-	}
-	
-	public Vec2D getJerk()
-	{
-		
-	}
-	
 	public Vec2D getMomentum()
+	{
+		
+	}
+	
+	public getLastTile()
 	{
 		
 	}
@@ -194,6 +184,16 @@ public class RBObject extends JGObject
 	public void addImpulse(Vec2D impulse)
 	{
 		
+	}
+	
+	public boolean matchField(int id)
+	{
+		for(int lf : lastFields)
+		{
+			if(lf == id)
+				return true;
+		}
+		return false;
 	}
 	
 	private void hitRB(RBObject rbArg)

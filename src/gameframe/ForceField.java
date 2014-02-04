@@ -55,11 +55,7 @@ public abstract class ForceField
 		if(inField(rb)) // If the RBObject is under the influence of the ForceField.
 		{
 			// Check if the RBObject was under the influence of the ForceField last frame.
-			boolean wasIn = false;
-			for(int id : rb.lastFields)
-			{
-				wasIn = (id == fieldID);
-			}
+			boolean wasIn = rb.matchField(fieldID);
 			
 			// If the RBObject was under the influence of the ForceField last frame, then call
 			// whileIn(), otherwise the RBObject is entering the ForceField for the first time

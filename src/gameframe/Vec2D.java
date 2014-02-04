@@ -289,4 +289,10 @@ public class Vec2D
 	{
 		return x_component * vec.getYMag() - y_component * vec.getXMag();
 	}
+	
+	// Returns a vector that is an exact copy of this vector. 
+	public Vec2D copy()
+	{
+		return new Vec2D(new Coord(x_component, y_component));
+	}
 }
