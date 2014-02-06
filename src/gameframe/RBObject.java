@@ -183,7 +183,7 @@ public class RBObject extends JGObject
 	
 	public void addImpulse(Vec2D impulse)
 	{
-		
+	
 	}
 	
 	public boolean matchField(int id)

@@ -6,23 +6,22 @@ import jgame.platform.*;
 
 public abstract class GameFrame extends JGEngine
 {
-	private long currentFrame = 0;
+	private static long currentFrame = 0;
+	
+	public static long getCurrFrame()
+	{
+		return currentFrame;
+	}
 	
 	public GameFrame(JGPoint size)
 	{
 		initEngine(size.x, size.y);
 	}
 	
-	public long getCurrFrame()
-	{
-		return currentFrame;
-	}
-	
 	public void doFrame()
 	{
 
 	}
-	
 	
 	
 	/*
@@ -35,14 +34,14 @@ public abstract class GameFrame extends JGEngine
 	 * new set of Buttons it should track. 
 	 */
 	
-	public final int PRESS = 1; // Pass this as the state to checkButton() to see if the button
-	                            // has just been pressed down.
+	public static final int PRESS = 1; // Pass this as the state to checkButton() to see if the button
+	                            	   // has just been pressed down.
 
-	public final int HOLD = 2; // Pass this as the state to checkButton() to see if the button
-	                           // is being held down continuously. 
+	public static final int HOLD = 2; // Pass this as the state to checkButton() to see if the button
+	                           		  // is being held down continuously. 
 
-	public final int RELEASE = 3; // Pass this as the state to checkButton() to see if the 
-		                          // Button has just been released. 
+	public static final int RELEASE = 3; // Pass this as the state to checkButton() to see if the 
+		                          		 // Button has just been released. 
 
 	private Button[] buttonList; // An array containing all the Button objects for input that
                                  // the Input class is tracking. 

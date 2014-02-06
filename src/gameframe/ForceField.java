@@ -81,7 +81,7 @@ public abstract class ForceField
 	
 	// Implement this method to fill in the logic that determines whether a potential RBObject has 
 	// entered the influence of the ForceField or not. 
-	protected abstract boolean inField(RBObject rb);
+	public abstract boolean inField(RBObject rb);
 	
 	// Implement this method to determine how to calculate the force that the ForceField exerts on
 	// an RBObject that is under its influence. 
