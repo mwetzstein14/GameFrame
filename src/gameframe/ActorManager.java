@@ -30,14 +30,14 @@ public abstract class ActorManager
 	public static final int WHEN_TOLD = 300; // Spawn Actor when told to by another class/object.
 	public static final int MAX_POP = 400; // Make sure that there is always the max number of Actors.
 	
-	private ArrayList<Actor> list; // ArrayList containing all the Actors created by this manager. 
+	protected ArrayList<Actor> list; // ArrayList containing all the Actors created by this manager. 
 	
 	private String managerID; // A String ID for the manager. Used to call methods of this manager
 							  // through ManagerList. Need not be unique if one wishes to have methods
 							  // of this manager called whenever managers with the same ID have their
 							  // methods called. 
 	
-	private int maxPop; // Maximum number of Actors that this manager may have in game at once.
+	public int maxPop; // Maximum number of Actors that this manager may have in game at once.
 	public int spawnMode; // Determines method of spawning Actors.
 	public int[] spawnInstruct; // Used to give specific instructions for spawning Actors.
 	public long refFrame; // Used to track the number of frames elapsed since the reference frame
@@ -52,10 +52,11 @@ public abstract class ActorManager
 		spawnInstruct = instruct;
 		refFrame = 0;
 		
-		list = new ArrayList<Actor>(max);
+		list = new ArrayList<Actor>();
 	}
 	
-	public abstract void spawn(); // Must be implemented by class which extends this class. 
+	public abstract void spawn(); // Must be implemented by class which extends this class. Add any
+								  // Actors created to list. 
 	
 	// As is, checks to see if all Actors in list are still in game. If they are not, remove them from
 	// list so that they may be garbage collected. If you override this method, call the super method
@@ -103,7 +104,7 @@ public abstract class ActorManager
 	}
 	
 	// Returns the number of frames that have passed since a reference frame (stored in refFrame). 
-	private long elapsed()
+	protected long elapsed()
 	{
 		return GameFrame.getCurrFrame() - refFrame;
 	}

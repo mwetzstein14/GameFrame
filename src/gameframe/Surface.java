@@ -6,10 +6,10 @@ public class Surface
 {
 	public static ArrayList<Surface> list = new ArrayList<Surface>();
 	
-	private int[] tileIDs;
-	private double coeffK;
-	private double coeffS;
-	private double elastic;
+	protected int[] tileIDs;
+	protected double coeffK;
+	protected double coeffS;
+	protected double elastic;
 	private boolean background;
 	
 	public Surface(int[] ids, double k, double s, double elast, boolean back)
@@ -27,12 +27,12 @@ public class Surface
 		
 	}
 	
-	private void onContact(RBObject rb, int tx, int ty, int txsize, int tysize)
+	protected void onContact(RBObject rb, int tx, int ty, int txsize, int tysize)
 	{
 		
 	}
 	
-	private void firstContact(RBObject rb, int tx, int ty, int txsize, int tysize)
+	protected void firstContact(RBObject rb, int tx, int ty, int txsize, int tysize)
 	{
 		
 	}

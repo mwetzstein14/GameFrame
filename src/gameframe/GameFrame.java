@@ -6,7 +6,7 @@ import jgame.platform.*;
 
 public abstract class GameFrame extends JGEngine
 {
-	private static long currentFrame = 0;
+	protected static long currentFrame = 0;
 	
 	public static long getCurrFrame()
 	{
@@ -27,8 +27,8 @@ public abstract class GameFrame extends JGEngine
 	/*
 	 * The GameFrame class can check input from a user/player. It can read input from both
 	 * the keyboard and mouse. (Note: if application is for a mobile or android device, then the input
-	 * may correspond to different things, ex: a left mouse click would be a tap on a android device's
-	 * screen. This class is not designed yet to check input for android or mobile phone devices
+	 * may correspond to different things, ex: a left mouse click would be a tap on an android device's
+	 * screen. GameFrame is not designed yet to check input for android or mobile phone devices
 	 * yet (might be a thing to add in later) so I am not sure if all input from those kinds of devices
 	 * is properly supported yet.) Use the trackAll() or trackThese() methods to tell GameFrame what  
 	 * new set of Buttons it should track. 

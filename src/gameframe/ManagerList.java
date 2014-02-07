@@ -57,10 +57,11 @@ public abstract class ManagerList
 		}
 		
 		// Next, for each match, remove the ActorManager along with its Actors for garbage collection.
-		for(int match : matches)
+		// Iterate backwards through matches because we are removing objects from list. 
+		for(int i = matches.size()-1; i >=0; i--)
 		{
-			list.get(match).removeAll();
-			list.remove(match);
+			list.get(i).removeAll();
+			list.remove(i);
 		}
 	}
 	
@@ -86,6 +87,28 @@ public abstract class ManagerList
 		}
 	}
 	
+	// Sets the maxPop for all ActorManagers with the passed String ID to a new maximum population. 
+	public static void setPop(int newPop, String id)
+	{
+		ArrayList<Integer> matches = new ArrayList<Integer>(); // Stores indexes of ActorManagers
+			   												   // with String ID id.
+			
+		// First finds indexes of ActorManagers with String ID id.
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(list.get(i).getID().equals(id))
+			{
+				matches.add(i);
+			}
+		}
+			
+		// Next, for each match, set maxPop to newPop.
+		for(int match : matches)
+		{
+			list.get(match).maxPop = newPop;
+		}
+	}
+		
 	// Sets the spawnMode for all ActorManagers with the passed String ID to a new spawning mode. 
 	public static void setMode(int newMode, String id)
 	{

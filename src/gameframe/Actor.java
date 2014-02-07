@@ -1,14 +1,16 @@
 package gameframe;
 
+import jgame.JGObject;
+
 public class Actor extends RBObject 
 {
 	public static int maxActors;
 	protected static int actorCount;
 	
-	private String managerID;
-	private double maxSpeed;
-	private int state;
-	private long changeFrame;
+	protected String managerID;
+	protected double maxSpeed;
+	protected int state;
+	protected long changeFrame;
 	
 	// I will write constructors once constructors for RBObject are written.
 	
@@ -38,18 +40,24 @@ public class Actor extends RBObject
 		
 	}
 	
-	private void destruction()
+	protected void destruction()
 	{
 		
 	}
 	
-	class Extension
+	public void destroy()
 	{
-		private String master;
-		private double xOffset;
-		private double yOffset;
-		private int state;
-		private long changeFrame;
+		
+	}
+	
+	class Extension extends JGObject
+	{
+		public Actor master;
+		protected double xOffset;
+		protected double yOffset;
+		protected int state;
+		protected long changeFrame;
+		protected boolean passCollision;
 		
 		// I will write constructors once constructors for RBObject are written.
 		
@@ -68,14 +76,19 @@ public class Actor extends RBObject
 			
 		}
 		
-		private void updateOffset()
+		protected void updateOffset()
 		{
 			
 		}
 		
-		private void destruction()
+		protected void destruction()
 		{
 			
+		}
+		
+		public boolean passCollision()
+		{
+			return passCollision();
 		}
 		
 		@Override
