@@ -10,7 +10,8 @@ public class Surface
 	protected double coeffK;
 	protected double coeffS;
 	protected double elastic;
-	private boolean background;
+	protected boolean background;
+	protected boolean ground;
 	
 	public Surface(int[] ids, double k, double s, double elast, boolean back)
 	{
