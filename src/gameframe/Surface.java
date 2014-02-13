@@ -18,6 +18,17 @@ public class Surface
 		
 	}
 	
+	public boolean checkTileID(int tilecid)
+	{
+		for(int i = 0; i < tileIDs.length; i++)
+		{
+			if(tileIDs[i] == tilecid)
+				return true;
+		}
+		
+		return false;
+	}
+	
 	public Vec2D hit(RBObject rb, int tilecid, int tx, int ty, int txsize, int tysize)
 	{
 		

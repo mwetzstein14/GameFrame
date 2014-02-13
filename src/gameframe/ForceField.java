@@ -16,7 +16,7 @@ public abstract class ForceField
 	 * Only ForceFields in this ArrayList will be able to affect RBObjects, as RBObjects access
 	 * ForceFields using this static ArrayList. 
 	 */
-	protected ArrayList<ForceField> list = new ArrayList<ForceField>();
+	protected static ArrayList<ForceField> list = new ArrayList<ForceField>();
 	
 	private int fieldID; // A unique ID number for the ForceField created. If a ForceField is given
 						 // the same ID number as another ForceField already in list, then that

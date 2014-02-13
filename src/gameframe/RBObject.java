@@ -1,5 +1,7 @@
 package gameframe;
 
+// Fix constructors to set bypassTile.
+
 import java.util.ArrayList;
 
 import jgame.JGObject;
@@ -48,8 +50,10 @@ public class RBObject extends JGObject
 	protected boolean insulate; // Set to true for RBObject to retain its electric charge during 
 							    // collisions or to false for it to share charge during a collision.
 	
-	protected int lastTile; // The collision ID of the last tile that triggered a call to the 
-						    // hit_bg() method during a frame.
+	protected ArrayList<Integer> lastTiles = new ArrayList<Integer>(); // The collision IDs of the  
+																	   // last tiles that triggered a  
+																	   // call to the hit_bg() method 
+																	   // during a frame.
 	protected ArrayList<Integer> lastFields = new ArrayList<Integer>(); // The ID of the ForceFields
 																	    // that the RBObject was under
 																	    // the influence of last frame.
@@ -88,6 +92,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -113,6 +118,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -140,6 +146,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -167,6 +174,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -192,6 +200,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -219,6 +228,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -246,6 +256,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -274,6 +285,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -301,6 +313,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 	
@@ -329,6 +342,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -355,6 +369,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -383,6 +398,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -411,6 +427,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -437,6 +454,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -464,6 +482,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -492,6 +511,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 
@@ -521,6 +541,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 	
@@ -548,6 +569,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = false;
 		bypassField = false;
+		bypassTile = false;
 		canMove = true;
 	}
 	
@@ -556,7 +578,7 @@ public class RBObject extends JGObject
 	
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, long start, boolean grav, boolean insul, boolean byRB,
-			boolean byField, boolean move) {
+			boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname);
 		
 		rbCount++;
@@ -577,12 +599,13 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, long start, boolean grav, boolean insul, 
-			boolean byRB, boolean byField, boolean move) {
+			boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, expiry);
 		
 		rbCount++;
@@ -603,13 +626,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, long start, boolean grav, boolean insul, 
-			boolean byRB, boolean byField, boolean move) {
+			boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height);
 		
@@ -631,13 +655,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, int expiry, long start, boolean grav, 
-			boolean insul, boolean byRB, boolean byField, boolean move) {
+			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height, expiry);
 		
@@ -659,12 +684,13 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, long start, boolean grav, boolean insul, 
-			boolean byRB, boolean byField, boolean move) {
+			boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag());
 		
 		rbCount++;
@@ -685,12 +711,13 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, int expiry, long start, boolean grav, 
-			boolean insul, boolean byRB, boolean byField, boolean move) {
+			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag(),
 				expiry);
 		
@@ -712,13 +739,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, Vec2D vel, long start, boolean grav, 
-			boolean insul, boolean byRB, boolean byField, boolean move) {
+			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag());
 		
@@ -740,13 +768,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry, long start, 
-			boolean grav, boolean insul, boolean byRB, boolean byField, boolean move) {
+			boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag(),
 				expiry);
@@ -769,13 +798,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, Vec2D vel, long start, boolean grav, 
-			boolean insul, boolean byRB, boolean byField, boolean move) {
+			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXMag(),
 				vel.getYMag());
 		
@@ -797,6 +827,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 	
@@ -805,7 +836,7 @@ public class RBObject extends JGObject
 	
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, long start, double m, double ch, double co, double e, 
-			boolean grav, boolean insul, boolean byRB, boolean byField, boolean move) {
+			boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname);
 		
 		rbCount++;
@@ -826,12 +857,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, long start, double m, double ch, double co, 
-			double e, boolean grav, boolean insul, boolean byRB, boolean byField, boolean move) {
+			double e, boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
+			boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, expiry);
 		
 		rbCount++;
@@ -852,13 +885,15 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, long start, double m, double ch, double co, 
-			double e, boolean grav, boolean insul, boolean byRB, boolean byField, boolean move) {
+			double e, boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
+			boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height);
 		
@@ -880,6 +915,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
@@ -887,7 +923,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, int expiry, long start, double m, double ch, 
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
-			boolean move) {
+			boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height, expiry);
 		
@@ -909,12 +945,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, long start, double m, double ch, double co, 
-			double e, boolean grav, boolean insul, boolean byRB, boolean byField, boolean move) {
+			double e, boolean grav, boolean insul, boolean byRB, boolean byField,
+			boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag());
 		
 		rbCount++;
@@ -935,13 +973,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, int expiry, long start, double m, double ch, 
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
-			boolean move) {
+			boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag(),
 				expiry);
 		
@@ -963,6 +1002,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
@@ -970,7 +1010,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, Vec2D vel, long start, double m, double ch, 
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
-			boolean move) {
+			boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag());
 		
@@ -992,6 +1032,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 
@@ -999,7 +1040,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry, long start, double m, 
 			double ch, double co, double e, boolean grav, boolean insul, boolean byRB,
-			boolean byField, boolean move) {
+			boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
 				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag(),
 				expiry);
@@ -1022,13 +1063,14 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 	
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, Vec2D vel, long start, double m, double ch, 
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
-			boolean move) {
+			boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXMag(),
 				vel.getYMag());
 		
@@ -1050,6 +1092,7 @@ public class RBObject extends JGObject
 		
 		bypassRB = byRB;
 		bypassField = byField;
+		bypassTile = byTile;
 		canMove = move;
 	}
 	
@@ -1103,11 +1146,16 @@ public class RBObject extends JGObject
 		return momentum;
 	}
 	
-	// Returns the collision ID of the last tile which prompted hit_bg() to be called during the
-	// current frame. 
-	public int getLastTile()
+	// Returns true if the given collision ID matches any of the collision IDs of tiles that the
+	// RBObject has already collided with during a frame. 
+	public boolean matchTile(int id)
 	{
-		return lastTile;
+		for(int lt : lastTiles)
+		{
+			if(lt == id)
+				return true;
+		}
+		return false;
 	}
 	
 	// Takes a force and determines the acceleration vector that should be added to accel.
@@ -1256,15 +1304,63 @@ public class RBObject extends JGObject
 	@Override
 	public void hit_bg(int tilecid, int tx, int ty, int txsize, int tysize)
 	{
+		// If the RBObject is not set to bypass tiles, then run collision logic for tiles that
+		// are associated with a surface.
+		if(!bypassTile)
+		{
+			// For every surface object in Surface.list, check to see if the surface should be used
+			// if this RBObject collides with a tile whose collision ID is tilecid.
+			for(Surface surface : Surface.list)
+			{
+				// If a surface that should be used is found:
+				if(surface.checkTileID(tilecid))
+				{
+					// Add the impulse that should result from the RBObject colliding with the 
+					// tile using the surface.
+					addImpulse(surface.hit(this, tilecid, tx, ty, txsize, tysize));
+					// Add the force that should result from the RBObject sliding against the tile 
+					// using the surface.
+					addForce(surface.slide(this, tilecid, tx, ty, txsize, tysize));
+				}
+			}
+		}
+		
 		
 	}
 	
 	// Overridden to update xspeed and yspeed with the components of velocity once velocity has been
-		// updated by accel and jerk. 
+	// updated by accel and jerk. 
 	@Override
 	public void move()
 	{
+		if(gravitate)
+			accel.addVec(Gravity.get_g());
 		
+		if(!bypassField)
+		{
+			ArrayList<Integer> fieldIDs = new ArrayList<Integer>();
+			
+			for(ForceField field : ForceField.list)
+			{
+				addForce(field.getForce(this));
+				fieldIDs.add(field.getID());
+			}
+			
+			lastFields = fieldIDs;
+		}
+		
+		if(canMove)
+		{	
+			velocity.addVec(accel);
+			velocity.addVec(jerk);
+		}
+		
+		for(int i = lastTiles.size(); i >= 0; i--)
+		{
+			lastTiles.remove(i);
+		}
+		
+		accel = new Vec2D(0.0, 0.0);
 	}
 	
 	// destroy() is called when the engine releases a JGObject. Used to decrement the current number

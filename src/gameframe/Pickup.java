@@ -49,11 +49,11 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, int expiry, long start,
-				boolean grav, boolean insul, boolean byRB, boolean byField,
+				boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
 				boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, expiry, start, grav, insul, byRB,
-					byField, move);
+					byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -63,10 +63,10 @@ public class Pickup extends RBObject
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, int expiry, long start,
 				double m, double ch, double co, double e, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, expiry, start, m, ch, co, e, grav,
-					insul, byRB, byField, move);
+					insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -106,9 +106,9 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, long start, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
-					tilebbox_width, tilebbox_height, start, grav, insul, byRB, byField,
+					tilebbox_width, tilebbox_height, start, grav, insul, byRB, byField, byTile,
 					move);
 			pickupCount++;
 			lifetime = life;
@@ -119,10 +119,10 @@ public class Pickup extends RBObject
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, long start, double m,
 				double ch, double co, double e, boolean grav, boolean insul,
-				boolean byRB, boolean byField, boolean move, int life) {
+				boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, start, m, ch, co, e, grav, insul,
-					byRB, byField, move);
+					byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -163,10 +163,10 @@ public class Pickup extends RBObject
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry,
 				long start, boolean grav, boolean insul, boolean byRB,
-				boolean byField, boolean move, int life) {
+				boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, vel, expiry, start, grav, insul, byRB,
-					byField, move);
+					byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -176,10 +176,10 @@ public class Pickup extends RBObject
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry,
 				long start, double m, double ch, double co, double e, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, vel, expiry, start, m, ch, co, e,
-					grav, insul, byRB, byField, move);
+					grav, insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -220,11 +220,11 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, Vec2D vel, long start,
-				boolean grav, boolean insul, boolean byRB, boolean byField,
+				boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
 				boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, vel, start, grav, insul, byRB,
-					byField, move);
+					byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -234,10 +234,10 @@ public class Pickup extends RBObject
 				int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 				int tilebbox_width, int tilebbox_height, Vec2D vel, long start,
 				double m, double ch, double co, double e, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x, tilebbox_y,
 					tilebbox_width, tilebbox_height, vel, start, m, ch, co, e, grav, insul,
-					byRB, byField, move);
+					byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -276,10 +276,10 @@ public class Pickup extends RBObject
 
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int expiry, long start,
-				boolean grav, boolean insul, boolean byRB, boolean byField,
+				boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
 				boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, expiry, start, grav, insul,
-					byRB, byField, move);
+					byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -288,9 +288,9 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int expiry, long start, double m,
 				double ch, double co, double e, boolean grav, boolean insul,
-				boolean byRB, boolean byField, boolean move, int life) {
+				boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, expiry, start, m, ch, co, e,
-					grav, insul, byRB, byField, move);
+					grav, insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -325,10 +325,10 @@ public class Pickup extends RBObject
 
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int expiry, Vec2D vel, long start,
-				boolean grav, boolean insul, boolean byRB, boolean byField,
+				boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
 				boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, expiry, vel, start, grav,
-					insul, byRB, byField, move);
+					insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -337,9 +337,9 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, int expiry, Vec2D vel, long start,
 				double m, double ch, double co, double e, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, expiry, vel, start, m, ch,
-					co, e, grav, insul, byRB, byField, move);
+					co, e, grav, insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -375,9 +375,9 @@ public class Pickup extends RBObject
 
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, long start, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, start, grav, insul, byRB,
-					byField, move);
+					byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -386,9 +386,9 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, long start, double m, double ch,
 				double co, double e, boolean grav, boolean insul, boolean byRB,
-				boolean byField, boolean move, int life) {
+				boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, start, m, ch, co, e, grav,
-					insul, byRB, byField, move);
+					insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -423,10 +423,10 @@ public class Pickup extends RBObject
 
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, Vec2D vel, int expiry, long start,
-				boolean grav, boolean insul, boolean byRB, boolean byField,
+				boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
 				boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, vel, expiry, start, grav,
-					insul, byRB, byField, move);
+					insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -435,9 +435,9 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, Vec2D vel, int expiry, long start,
 				double m, double ch, double co, double e, boolean grav,
-				boolean insul, boolean byRB, boolean byField, boolean move, int life) {
+				boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, vel, expiry, start, m, ch,
-					co, e, grav, insul, byRB, byField, move);
+					co, e, grav, insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -473,10 +473,10 @@ public class Pickup extends RBObject
 
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, Vec2D vel, long start,
-				boolean grav, boolean insul, boolean byRB, boolean byField,
+				boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile,
 				boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, vel, start, grav, insul,
-					byRB, byField, move);
+					byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;
@@ -485,9 +485,9 @@ public class Pickup extends RBObject
 		public Pickup(String name, boolean unique_id, double x, double y,
 				int collisionid, String gfxname, Vec2D vel, long start, double m,
 				double ch, double co, double e, boolean grav, boolean insul,
-				boolean byRB, boolean byField, boolean move, int life) {
+				boolean byRB, boolean byField, boolean byTile, boolean move, int life) {
 			super(name, unique_id, x, y, collisionid, gfxname, vel, start, m, ch, co, e,
-					grav, insul, byRB, byField, move);
+					grav, insul, byRB, byField, byTile, move);
 			pickupCount++;
 			lifetime = life;
 			lifeStage = 1;

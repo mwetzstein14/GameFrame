@@ -25,6 +25,9 @@ public abstract class Gravity
 	// Used to get the acceleration vector g. 
 	public static Vec2D get_g()
 	{
-		return g;
+		if(gravOn) // Return g if gravity is on.
+			return g;
+		else // Return a zero vector if gravity is off. 
+			return new Vec2D(0.0, 0.0);
 	}
 }
