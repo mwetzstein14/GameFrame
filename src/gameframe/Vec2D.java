@@ -121,15 +121,15 @@ public class Vec2D
 	// Performs vector addition. Adds vec to this vector. 
 	public void addVec(Vec2D vec)
 	{
-		x_component += vec.getXMag();
-		y_component += vec.getYMag();
+		x_component += vec.getXComp();
+		y_component += vec.getYComp();
 	}
 	
 	// Performs vector subtracting. Subtracts vec from this vector.
 	public void subtractVec(Vec2D vec)
 	{
-		x_component -= vec.getXMag();
-		y_component -= vec.getYMag();
+		x_component -= vec.getXComp();
+		y_component -= vec.getYComp();
 	}
 	
 	// Sets the magnitude of the vector to one. Keeps same direction.
@@ -172,14 +172,14 @@ public class Vec2D
 		return Math.sqrt(Math.pow(x_component, 2.0) + Math.pow(y_component, 2.0));
 	}
 	
-	// Returns the magnitude of the x-component of the vector.
-	public double getXMag()
+	// Returns the x-component of the vector.
+	public double getXComp()
 	{
 		return x_component;
 	}
 	
-	// Returns the magnitude of the y-component of the vector.
-	public double getYMag()
+	// Returns the y-component of the vector.
+	public double getYComp()
 	{
 		return y_component;
 	}
@@ -278,7 +278,7 @@ public class Vec2D
 	// Returns the dot product between the vector and vec.
 	public double dot(Vec2D vec)
 	{
-		return x_component * vec.getXMag() + y_component * vec.getYMag();
+		return x_component * vec.getXComp() + y_component * vec.getYComp();
 	}
 	
 	// Returns the magnitude of the cross product between the vector and vec. (Note: cross product
@@ -287,7 +287,7 @@ public class Vec2D
 	// would point out of or into the screen). 
 	public double crossMag(Vec2D vec)
 	{
-		return x_component * vec.getYMag() - y_component * vec.getXMag();
+		return x_component * vec.getYComp() - y_component * vec.getXComp();
 	}
 	
 	// Returns a vector that is an exact copy of this vector. 

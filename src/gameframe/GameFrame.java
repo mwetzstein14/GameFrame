@@ -23,6 +23,10 @@ public abstract class GameFrame extends JGEngine
 
 	}
 	
+	public void frameActivites()
+	{
+		
+	}
 	
 	/*
 	 * The GameFrame class can check input from a user/player. It can read input from both

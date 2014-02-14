@@ -396,8 +396,11 @@ public class Particle extends RBObject
 	@Override
 	public void move()
 	{
-		if(elapsed() == lifetime)
-			expire();
+		if(beforeCollisions()) // Make sure that this code is run once when move is called before
+		{       			   // collision methods are called. 
+			if(elapsed() == lifetime)
+				expire();
+		}
 		
 		super.move(); // Convention is to call super at the end in order to implement RBObject physics
 					  // capabilities. 

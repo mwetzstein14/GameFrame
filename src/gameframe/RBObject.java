@@ -21,6 +21,11 @@ import jgame.JGObject;
 
 public class RBObject extends JGObject 
 {
+	private boolean beforeCollisions = true; // Move method is called twice in order to implement 
+									 // force fields before collisions and then called again after  
+									 // collisions to update velocity. This variable is used to track
+	                                 // when move is being called, before or after collisions.
+	
 	public static int maxRB; // Maximum number of RBObjects that may be created in game. 
 							 // Check if rbCount is below this before creating RBObjects.
 	protected static int rbCount; // The current number of RBObjects in game. 
@@ -180,7 +185,7 @@ public class RBObject extends JGObject
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, long start) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -207,7 +212,7 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel,
 			int expiry, long start) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag(),
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -236,7 +241,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, Vec2D vel, long start) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag());
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -264,7 +269,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, int tilebbox_x, int tilebbox_y,
 			int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry, long start) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag(),
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -292,8 +297,8 @@ public class RBObject extends JGObject
 
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, Vec2D vel, long start) {
-		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXMag(),
-				vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXComp(),
+				vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -434,7 +439,7 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, long start, double m, double ch, double co, 
 			double e) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -461,7 +466,7 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel,
 			int expiry, long start, double m, double ch, double co, double e) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag(),
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -491,7 +496,7 @@ public class RBObject extends JGObject
 			int tilebbox_width, int tilebbox_height, Vec2D vel, long start, double m, double ch, 
 			double co, double e) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag());
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -520,7 +525,7 @@ public class RBObject extends JGObject
 			int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry, long start, double m, 
 			double ch, double co, double e) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag(),
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -548,8 +553,8 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, Vec2D vel, long start, double m, double ch, 
 			double co, double e) {
-		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXMag(),
-				vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXComp(),
+				vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -691,7 +696,7 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, long start, boolean grav, boolean insul, 
 			boolean byRB, boolean byField, boolean byTile, boolean move) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -718,7 +723,7 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, Vec2D vel, int expiry, long start, boolean grav, 
 			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag(),
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -748,7 +753,7 @@ public class RBObject extends JGObject
 			int tilebbox_width, int tilebbox_height, Vec2D vel, long start, boolean grav, 
 			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag());
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -777,7 +782,7 @@ public class RBObject extends JGObject
 			int tilebbox_width, int tilebbox_height, Vec2D vel, int expiry, long start, 
 			boolean grav, boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag(),
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -806,8 +811,8 @@ public class RBObject extends JGObject
 	public RBObject(String name, boolean unique_id, double x, double y,
 			int collisionid, String gfxname, int expiry, Vec2D vel, long start, boolean grav, 
 			boolean insul, boolean byRB, boolean byField, boolean byTile, boolean move) {
-		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXMag(),
-				vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXComp(),
+				vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -953,7 +958,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, Vec2D vel, long start, double m, double ch, double co, 
 			double e, boolean grav, boolean insul, boolean byRB, boolean byField,
 			boolean byTile, boolean move) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -981,7 +986,7 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, Vec2D vel, int expiry, long start, double m, double ch, 
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
 			boolean byTile, boolean move) {
-		super(name, unique_id, x, y, collisionid, gfxname, vel.getXMag(), vel.getYMag(),
+		super(name, unique_id, x, y, collisionid, gfxname, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -1012,7 +1017,7 @@ public class RBObject extends JGObject
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
 			boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag());
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -1042,7 +1047,7 @@ public class RBObject extends JGObject
 			double ch, double co, double e, boolean grav, boolean insul, boolean byRB,
 			boolean byField, boolean byTile, boolean move) {
 		super(name, unique_id, x, y, collisionid, gfxname, tilebbox_x,
-				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXMag(), vel.getYMag(),
+				tilebbox_y, tilebbox_width, tilebbox_height, vel.getXComp(), vel.getYComp(),
 				expiry);
 		
 		rbCount++;
@@ -1071,8 +1076,8 @@ public class RBObject extends JGObject
 			int collisionid, String gfxname, int expiry, Vec2D vel, long start, double m, double ch, 
 			double co, double e, boolean grav, boolean insul, boolean byRB, boolean byField, 
 			boolean byTile, boolean move) {
-		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXMag(),
-				vel.getYMag());
+		super(name, unique_id, x, y, collisionid, gfxname, expiry, vel.getXComp(),
+				vel.getYComp());
 		
 		rbCount++;
 		startFrame = start;
@@ -1328,39 +1333,82 @@ public class RBObject extends JGObject
 		
 	}
 	
-	// Overridden to update xspeed and yspeed with the components of velocity once velocity has been
-	// updated by accel and jerk. 
+	// move() is called twice by GameFrame, once before collisions are checked and once after they
+	// are checked. move() is overridden so that if it is being called before, it will accelerate
+	// the RBObject based on the influence of gravity as well as any ForceFields in ForceField.list.
+	// If one plans to override move() when extending this class, they should wrap all their code
+	// in one two if statements, one that checks if move is being called before collisions or one
+	// that checks if it is being called after. That way, the code will only be executed once, and it
+	// may either happen before or after collisions. 
 	@Override
 	public void move()
 	{
-		if(gravitate)
-			accel.addVec(Gravity.get_g());
-		
-		if(!bypassField)
+		// If move is called before collisions are checked, add the accelerations due to Gravity and
+		// ForceFields.
+		if(beforeCollisions)
 		{
-			ArrayList<Integer> fieldIDs = new ArrayList<Integer>();
+			// If this RBObject should be affected by gravity, then add the gravity acceleration
+			// vector.
+			if(gravitate)
+				accel.addVec(Gravity.get_g());
 			
-			for(ForceField field : ForceField.list)
+			// If this RBObject should be affected by ForceFields, then add the forces caused by any
+			// ForceFields. 
+			if(!bypassField)
 			{
-				addForce(field.getForce(this));
-				fieldIDs.add(field.getID());
+				ArrayList<Integer> fieldIDs = new ArrayList<Integer>(); // Holds the IDs of the
+																		// ForceFields that affected
+																		// this RBObject this frame.
+				
+				// For every ForceField in ForceField.list, check if it exerts a force on this 
+				// RBObject and then add the force and record the ForceField's ID if it does.
+				for(ForceField field : ForceField.list)
+				{
+					Vec2D force = field.getForce(this);
+					
+					if(!(force.equals(new Vec2D(0.0, 0.0))))
+					{
+						fieldIDs.add(field.getID());
+						addForce(force);
+					}
+				}
+				
+				lastFields = fieldIDs; // Update which ForceFields affected this RBObject for next
+									   // frame.
 			}
 			
-			lastFields = fieldIDs;
+			beforeCollisions = false; // Next time this method is called, it should carry out code
+									  // that should be executed after collision detection is done.
 		}
 		
-		if(canMove)
-		{	
-			velocity.addVec(accel);
-			velocity.addVec(jerk);
-		}
-		
-		for(int i = lastTiles.size(); i >= 0; i--)
+		// If move is called after collisions are checked, update the velocity vector of the object
+		// and then set the x and y speed values that JGEngine uses to move JGObjects equal to the
+		// x and y components of velocity.
+		if(!beforeCollisions)
 		{
-			lastTiles.remove(i);
-		}
+			// Only update the velocity of the RBObject if its setting currently permit it to move.
+			if(canMove) 
+			{	
+				velocity.addVec(accel);
+				velocity.addVec(jerk);
+				
+				xspeed = velocity.getXComp();
+				yspeed = velocity.getYComp();
+			}
+			
+			// Clear the ArrayList containing the collision IDs of the last tiles that this RBObject
+			// collided with this frame so that the ArrayList can be used again properly next frame.
+			for(int i = lastTiles.size(); i >= 0; i--)
+			{
+				lastTiles.remove(i);
+			}
 		
-		accel = new Vec2D(0.0, 0.0);
+			accel = new Vec2D(0.0, 0.0); // Reset the acceleration vector to zero so that it does not
+										 // compound each frame.
+			
+			beforeCollisions = true; // Next time this method is called, it should carry out code
+			  						 // that should be executed before collision detection is done.
+		}
 	}
 	
 	// destroy() is called when the engine releases a JGObject. Used to decrement the current number
@@ -1369,5 +1417,15 @@ public class RBObject extends JGObject
 	public void destroy()
 	{
 		rbCount--;
+	}
+	
+	// beforeCollisions is a private instance variable that should not be changed by methods of
+	// classes which extend this class. Therefore, if you are writing a class which extends this
+	// class that needs to check the value of beforeCollisions, you should use this method to check
+	// its value instead of the instance variable. The instance variable is essentially disguised as
+	// a method for the convenience of the programmer extending this class. 
+	public boolean beforeCollisions()
+	{
+		return beforeCollisions;
 	}
 }
