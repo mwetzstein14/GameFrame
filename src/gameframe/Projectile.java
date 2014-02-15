@@ -849,9 +849,9 @@ public class Projectile extends RBObject
 		return projectileCount;
 	}
 	
-	// Override to write code for actions that the Pickup should take before being destroyed, such as
-	// cleanup, spawning new objects, etc. Call the super method to make sure that your Pickup
-	// will remove itself when expire is called. When the object should then remove itself from
+	// Override to write code for actions that the Projectile should take before being destroyed, such 
+	// as cleanup, spawning new objects, etc. Call the super method to make sure that your Projectile
+	// will remove itself when it is destroyed. When the object should then remove itself from
 	// the game, call this method instead of remove() if you wish to have the actions defined in this
 	// method take place.
 	public void destruction()

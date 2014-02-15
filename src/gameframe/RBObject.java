@@ -1406,6 +1406,8 @@ public class RBObject extends JGObject
 			accel = new Vec2D(0.0, 0.0); // Reset the acceleration vector to zero so that it does not
 										 // compound each frame.
 			
+			charge = nextCharge; // Update the resulting charge of the RBObject after this frame. 
+			
 			beforeCollisions = true; // Next time this method is called, it should carry out code
 			  						 // that should be executed before collision detection is done.
 		}
