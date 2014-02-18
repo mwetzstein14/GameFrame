@@ -2154,14 +2154,247 @@ public class Actor extends RBObject
 		   									 // the hit() method of its master Actor whenever it has a 
 		   									 // collision with a tile.
 		
-		// I will write constructors once constructors for RBObject are written.
+		// Below are constructors from JGObject modified to create an Extension with default settings
+		// (collisions are not passed to master Actor and the initial state is zero). Zero is the 
+		// default beginning state, it's recommended to make the state that your Actor object always 
+		// begins in state zero so that the state does not have to be set through the constructor. The
+		// constructor is also modified to set the initial x and y offset positions from its master 
+		// Actor rather than its exact initial x and y position in game (the parameters x and y are
+		// changed to xOff and yOff). Lastly, a reference to the Extension's master Actor must also
+		// be passed as an argument through the constructor.
+		
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height,
+				int expiry, Actor actor) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height, Actor actor) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int expiry, Actor actor) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, Actor actor) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+		
+		// Below are the same constructors again, except modified this time to allow you to set the
+		// initial state of the Extension.
+		
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height,
+				int expiry, Actor actor, int initState) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height, Actor actor, int initState) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int expiry, Actor actor, int initState) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, Actor actor, int initState) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = false;
+			passTileCollision = false;
+		}
+		
+		// Below are the same constructors again, except modified this time to allow you to set the
+		// collision passing settings of the Extension.
+		
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height,
+				int expiry, Actor actor, boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height, Actor actor, 
+				boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int expiry, Actor actor, boolean passJG, 
+				boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, Actor actor, boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = 0;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+		
+		// Below are the same constructors again, except modified this time to allow you to set both 
+		// the initial state and the collision passing settings of the Extension.
+		
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height,
+				int expiry, Actor actor, int initState, boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int tilebbox_x,
+				int tilebbox_y, int tilebbox_width, int tilebbox_height, Actor actor, 
+				int initState, boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, tilebbox_x, 
+					tilebbox_y, tilebbox_width, tilebbox_height);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, int expiry, Actor actor, int initState, 
+				boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname, expiry);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
+
+		public Extension(String name, boolean unique_id, double xOff, double yOff,
+				int collisionid, String gfxname, Actor actor, int initState, 
+				boolean passJG, boolean passTile) {
+			super(name, unique_id, actor.x+xOff, actor.y+yOff, collisionid, gfxname);
+			master = actor;
+			xOffset = xOff;
+			yOffset = yOff;
+			state = initState;
+			changeFrame = GameFrame.getCurrFrame();
+			passJGCollision = passJG;
+			passTileCollision = passTile;
+		}
 		
 		// Returns the current state that the Extension is in. 
 		public int getState()
 		{
 			return state;
 		}
-		
+
 		// Either the Extension itself or other JGObjects may change the state that an Actor is in.
 		// Override if any settings for the Extension should be updated upon changing state. Call
 		// the super method at the end. 
@@ -2188,12 +2421,12 @@ public class Actor extends RBObject
 		
 		// Override to write code for actions that the Extension should take before being destroyed,  
 		// such as cleanup, spawning new objects, etc. Call the super method to make sure that your 
-		// Extension will remove itself when it is destroyed. When the object should then remove itself 
-		// from the game, call this method instead of remove() if you wish to have the actions defined  
-		// in this method take place.
+		// Extension will remove itself when it is destroyed. When the object should then remove  
+		// itself from the game, call this method instead of remove() if you wish to have the actions   
+		// defined in this method take place.
 		protected void destruction()
 		{
-			
+			remove();
 		}
 		
 		// The hit() method is overridden to pass any collisions that this Extension has with other
