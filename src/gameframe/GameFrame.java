@@ -4,38 +4,163 @@ import jgame.*;
 import jgame.impl.*;
 import jgame.platform.*;
 
+/*
+ * GameFrame is a framework built on top of the JGEngine which adds more specific functionalities to
+ * the Engine (much like how StdGame, which comes with JGEngine, is a framework that adds more useful
+ * functionalities to the Engine for making highscore, level based games). GameFrame is designed for 
+ * two purposes, to manage the creation and organization of game objects while your game is running 
+ * and to implement simple physics for effects in your game. GameFrame categorizes several different
+ * types of game object classes from which you can extend your own classes for game objects: Actor, 
+ * Particle, Pickup, and Projectile (see source code files of these classes for descriptions). Each
+ * of these classes extend the RBObject class, which has all the standard physics capabilities they
+ * share in common. GameFrame is also capable of implementing some physics, such as (physical)
+ * collisions, frictional forces, forces from force fields, gravity, insulating and conducting charge,
+ * etc. GameFrame does not support complex physics, such as torque. The philosophy behind what sort of
+ * physics is included is that GameFrame is for creating 2D games, not simulations, so the physics 
+ * needed to create interesting and creative games does not need to be thorough or accurate because
+ * the goal is not to simulate real life. When using GameFrame, one can choose whether they want to 
+ * use the physics or organizational tools of GameFrame. Either can be avoided, although using your 
+ * own organizational approach to creating and categorizing game objects may require more code than
+ * simply turning off the physics capabilities for any or all of your game objects. 
+ * 
+ * To use GameFrame, one must follow similar steps to using the JGEngine, except your main class 
+ * should extend GameFrame instead of JGEngine. One may also extend the other classes included with
+ * the GameFrame framework, for creating things such as game objects and force fields, as necessary.
+ * When overriding methods for any class included in GameFrame however, it is important to remember
+ * that it is a convention to call the super class's method at the end of the overridden method in
+ * order to implement the functionality of the framework properly. One must similarly implement the 
+ * initCanvas() and initGame() methods, as one would do when using the JGEngine, before producing 
+ * frames with the engine. You are responsible for setting any necessary settings for the framework
+ * (such as gravity, etc) in the initGame() method, and are responsible for creating ActorManager
+ * objects, ForceFields, etc in this method or where otherwise appropriate. ActorManager objects must
+ * be added to ManagerList manually. Finally, one must override the doFrame() method and call the 
+ * appropriate activities() method inside it in order to use the full functionality of the framework
+ * (game objects will not do anything if none of these methods are not called in doFrame()). Do not
+ * forget to call the super doFrame() method at the end of doFrame() (as is convention). 
+ */
+
+@SuppressWarnings({ "serial", "unused" }) // Suppresses unnecessary warnings. 
 public abstract class GameFrame extends JGEngine
 {
-	protected static long currentFrame = 0;
+	protected static long currentFrame = 0; // Used to keep track of how many frames have passed 
+											// since the game has started running or since it was
+											// last reset. Static so that it can be accessed by 
+											// other classes in framework.
 	
+	// Getter method used by other classes or objects in order to get the current number of frames
+	// the game has been running. 
 	public static long getCurrFrame()
 	{
 		return currentFrame;
 	}
 	
+	// Method used to reset currentFrame to zero. May be called in situations where the game resets,
+	// changes to a different state (ex: title screen -> first level) or to a different stage or
+	// level in the game. 
+	public static void resetFrame()
+	{
+		currentFrame = 0;
+	}
+	
+	// Constructor if your game is being launched as an application. Call this super constructor in
+	// your class's constructor and pass it a JGPoint containing the dimensions of the screen in 
+	// pixels.
 	public GameFrame(JGPoint size)
 	{
 		initEngine(size.x, size.y);
 	}
 	
-	public void doFrame()
+	// Constructor if your game is being launched as an applet. Call this super constructor in your
+	// class's constructor to have game launch as an applet. 
+	public GameFrame()
 	{
-
+		initEngineApplet();
 	}
 	
-	public void frameActivites()
+	// The doFrame() method is a method that's used to update your game each frame. It is overridden
+	// in GameFrame in order to have currentFrame increment at the end of each frame. Call the super
+	// doFrame() method at the end of your class's doFrame() method in order to have it properly 
+	// keep track of the number of frames that have passed. 
+	@Override
+	public void doFrame()
 	{
+		currentFrame++;
+	}
+	
+	// The activities() methods below are used to properly update game objects which are created
+	// using classes in the GameFrame framework or classes derived from those classes. The 
+	// appropriate activities() method(s) should be called in doFrame() depending on what objects
+	// you want to be updated. 
+	
+	// The general purpose activities() method. Takes no parameters and updates all game objects as 
+	// well as all ActorManagers.
+	public void activities()
+	{
+		ManagerList.destroyAll();
+		ManagerList.spawnAll();
+		ManagerList.routinesAll();
 		
+		moveObjects();
+		checkCollision(0,0);
+		checkBGCollision(0,0);
+		moveObjects();
+	}
+	
+	// A version of activities() that lets one only update the ActorManagers whose String ID matches
+	// the argument passed through manid. All game objects are still updated. 
+	public void activities(String manid)
+	{
+		ManagerList.destroyID(manid);
+		ManagerList.spawnID(manid);
+		ManagerList.routinesID(manid);
+		
+		moveObjects();
+		checkCollision(0,0);
+		checkBGCollision(0,0);
+		moveObjects();
+	}
+	
+	// A version of activities() that lets one choose which game objects should be updated and 
+	// checked for collisions. The collision ID of the objects to be updated should be passed through
+	// objcid. The collision IDs of the other objects and tiles to check collisions against should be
+	// passed through srccid and tilecid. You can pass 0 through either of those parameters in order
+	// to have it check collisions against all other game objects or all tiles. All ActorManagers are
+	// still updated.
+	public void activities(int objcid, int srccid, int tilecid)
+	{
+		ManagerList.destroyAll();
+		ManagerList.spawnAll();
+		ManagerList.routinesAll();
+		
+		moveObjects(null, objcid);
+		checkCollision(srccid, objcid);
+		checkBGCollision(tilecid, objcid);
+		moveObjects(null, objcid);
+	}
+	
+	// A version of activities() that combines the two above, letting you choose which ActorManagers
+	// and which game objects are updated (as well as what collisions are check for the game objects
+	// being updated). 
+	public void activities(String manid, int objcid, int srccid, int tilecid)
+	{
+		ManagerList.destroyID(manid);
+		ManagerList.spawnID(manid);
+		ManagerList.routinesID(manid);
+		
+		moveObjects(null, objcid);
+		checkCollision(srccid, objcid);
+		checkBGCollision(tilecid, objcid);
+		moveObjects(null, objcid);
 	}
 	
 	/*
 	 * The GameFrame class can check input from a user/player. It can read input from both
 	 * the keyboard and mouse. (Note: if application is for a mobile or android device, then the input
-	 * may correspond to different things, ex: a left mouse click would be a tap on an android device's
-	 * screen. GameFrame is not designed yet to check input for android or mobile phone devices
-	 * yet (might be a thing to add in later) so I am not sure if all input from those kinds of devices
-	 * is properly supported yet.) Use the trackAll() or trackThese() methods to tell GameFrame what  
-	 * new set of Buttons it should track. 
+	 * may correspond to different things, ex: a left mouse click would be a tap on an android 
+	 * device's screen. GameFrame is not designed yet to check input for android or mobile phone 
+	 * devices yet (might be a thing to add in later) so I am not sure if all input from those kinds 
+	 * of devices is properly supported yet.) Use the trackAll() or trackThese() methods to tell   
+	 * GameFrame what new set of Buttons it should track. 
 	 */
 	
 	public static final int PRESS = 1; // Pass this as the state to checkButton() to see if the button
