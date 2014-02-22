@@ -18,6 +18,33 @@ public abstract class ForceField
 	 */
 	protected static ArrayList<ForceField> list = new ArrayList<ForceField>();
 	
+	// Static method for clearing all ForceField objects out of ForceField.list.
+	public static void removeAll()
+	{
+		// Iterate through list backwards and remove all objects.
+		for(int i = list.size()-1; i >= 0; i--)
+		{
+			list.remove(i);
+		}
+	}
+	
+	// Static method for removing the ForceField object whose unique ID matches the argument passed
+	// through id.
+	public static void removeID(int id)
+	{
+		// Iterate through list backwards.
+		for(int i = list.size()-1; i >= 0; i--)
+		{
+			// Once ForceField with matching ID is found, remove it.
+			if(list.get(i).getID() == id)
+			{
+				list.remove(i);
+				break; // IDs are unique for ForceFields, so it is not necessary to continue 
+					   // searching for more matches. 
+			}
+		}
+	}
+	
 	private int fieldID; // A unique ID number for the ForceField created. If a ForceField is given
 						 // the same ID number as another ForceField already in list, then that
 						 // ForceField already in list will be removed from list. 

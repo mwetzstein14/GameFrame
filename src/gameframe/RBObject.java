@@ -1318,7 +1318,7 @@ public class RBObject extends JGObject
 			for(Surface surface : Surface.list)
 			{
 				// If a surface that should be used is found:
-				if(surface.checkTileID(tilecid))
+				if(surface.checkTileID(tilecid, this))
 				{
 					// Add the impulse that should result from the RBObject colliding with the 
 					// tile using the surface.
