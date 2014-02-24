@@ -59,6 +59,15 @@ public class RBObject extends JGObject
 																	   // last tiles that triggered a  
 																	   // call to the hit_bg() method 
 																	   // during a frame.
+	
+	protected ArrayList<Integer> lastSurfaces = new ArrayList<Integer>(); // The collision IDs of the
+																		  // tiles that triggered a 
+																		  // call to the hit_bg()
+																		  // method last frame, used
+																		  // to identity the Surfaces
+																		  // which were last made 
+																		  // contact with.
+	
 	protected ArrayList<Integer> lastFields = new ArrayList<Integer>(); // The ID of the ForceFields
 																	    // that the RBObject was under
 																	    // the influence of last frame.
@@ -1163,6 +1172,18 @@ public class RBObject extends JGObject
 		return false;
 	}
 	
+	// Returns true if the given collision ID matches any of the collision IDs of tiles associated
+	// with Surfaces that the RBObject collided with last frame. 
+	public boolean matchSurface(int id)
+	{
+		for(int lt : lastSurfaces)
+		{
+			if(lt == id)
+				return true;
+		}
+		return false;
+	}
+	
 	// Takes a force and determines the acceleration vector that should be added to accel.
 	public void addForce(Vec2D force)
 	{
@@ -1326,8 +1347,14 @@ public class RBObject extends JGObject
 					// Add the force that should result from the RBObject sliding against the tile 
 					// using the surface.
 					addForce(surface.slide(this, tilecid, tx, ty, txsize, tysize));
+					
+					lastSurfaces.add(tilecid); // Add ID of associated tile to list of last Surface
+											   // objects to interact with this RBObject (Surfaces
+											   // identified by their associated tiles). 
 				}
 			}
+			lastTiles.add(tilecid); // Add the tile collision ID to list of tiles last collided with
+									// during this frame. 
 		}
 		
 		
@@ -1396,9 +1423,26 @@ public class RBObject extends JGObject
 				yspeed = velocity.getYComp();
 			}
 			
+			// If a tile collision ID is not in lastTiles, that means that the RBObject did not 
+			// collide with that that tile this frame or interact with any surfaces associated with 
+			// it, so the collision ID should be removed from lastSurfaces. 
+			for(int i = lastSurfaces.size()-1; i >= 0; i--)
+			{
+				boolean in = false;
+				
+				for(int lt : lastTiles)
+				{
+					if(lt == lastSurfaces.get(i))
+						in = true;
+				}
+				
+				if(!in)
+					lastSurfaces.remove(i);
+			}
+			
 			// Clear the ArrayList containing the collision IDs of the last tiles that this RBObject
 			// collided with this frame so that the ArrayList can be used again properly next frame.
-			for(int i = lastTiles.size(); i >= 0; i--)
+			for(int i = lastTiles.size()-1; i >= 0; i--)
 			{
 				lastTiles.remove(i);
 			}
