@@ -4,7 +4,11 @@ package gameframe;
  * The Vec2D class is a class used to represent a vector quantity (a quantity with both a magnitude
  * and direction). The class supports many methods for modifying the vector and performing vector
  * operations.
+ * 
  * Zero degrees and zero radians both point to the right.
+ * 90 degrees and pi/2 radians both point down.
+ * The reason for this is because in JGame, the origin is in the top left of the screen, so the unit
+ * circle is flipped over the x-axis. 
  */
 
 public class Vec2D 

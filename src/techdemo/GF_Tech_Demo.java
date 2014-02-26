@@ -33,14 +33,58 @@ public class GF_Tech_Demo extends GameFrame {
 	@Override
 	public void initGame() 
 	{
-		setFrameRate(
-				60,// 35 = frame rate, 35 frames per second
-				2  //  2 = frame skip, skip at most 2 frames before displaying
-				   //      a frame again
-			);
+		setFrameRate(45, 2);
 		
 		defineMedia("demo_images.tbl");
+		
+		setTiles(0, 1, 
+				new String[] { 
+				"HHHHHHHHHHHHHHHHHHHH",
+				"V.R................V",
+				"V.R................V",
+				"V.R....V...........V",
+				"V.R....V...........V",
+				"V.R....V...........V",
+				"V.R....V......HHH..V",
+				"V.R....V...........V",
+				"V.R................V",
+				"V.R................V",
+				"V.R.......HHH......V",
+				"V.R................V",
+				"V.R................V",
+				"HHHHHHHHHHHHHHHHHHHH" } );
+		
+		int[] nonCharKeys = new int[] {KeyUp, KeyDown, KeyRight, KeyLeft, KeyMouse1, KeyEsc};
+		char[] charKeys = new char[] {'W', 'S', ' ', 'M', 'C', 'V'};
+		
+		trackThese(nonCharKeys, charKeys);
+		
+		setCursor(null);
+		new Crosshairs();
 	}
 	
+	@Override
+	public void doFrame()
+	{
+		updateButtons();
+		
+		activities();
+		
+		super.doFrame();
+	}
 	
+	class Crosshairs extends JGObject
+	{
+		public Crosshairs()
+		{
+			super("crosshairs", false, 0, 0, 0, "crosshairs");
+		}
+		
+		@Override
+		public void move()
+		{
+			x = getMouseX() - 8.0;
+			y = getMouseY() - 8.0;
+		}
+	}
 }

@@ -28,8 +28,9 @@ diamond_dead	-	0	Enemy_Husk.gif		-
 
 // Images used for environment tiles:
 
-steel_block		S	1	Wall.gif	-
-rail			R	2	Rail.gif	-
+steel_vert		V	1	Wall.gif	-
+steel_hor		H	2	Wall.gif	-
+rail			R	4	Rail.gif	-
 empty			.	0	null		-
 
 // Images used for explosion along with explosion animation:
@@ -49,3 +50,7 @@ explosion		boom1;boom2;boom3;boom4;boom5;boom6;boom7	0.2
 // A debris image, used for particles that appear when walls are hit or things break apart:
 
 debris		-	0	Debris.gif	-
+
+// Crosshairs used to aim balls launched from launcher (oops, spelt "crosshairs" wrong for file name):
+
+crosshairs		-	0	Crossairs.gif	-
