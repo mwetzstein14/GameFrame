@@ -1212,6 +1212,12 @@ public class RBObject extends JGObject
 		return insulate;
 	}
 	
+	// Returns true if RBObject is set to bypass collisions with other RBObjects and false otherwise.
+	public boolean bypassRB()
+	{
+		return bypassRB;
+	}
+	
 	// Takes a field ID and returns true if it matches one of the ForceFields that this RBObject was
 	// under the influence of last frame and false if it does not.
 	public boolean matchField(int id)
@@ -1229,8 +1235,8 @@ public class RBObject extends JGObject
 	public void hit(JGObject obj)
 	{	
 		// If RBObject's setting is to collide with other RBObjects and the RBObject collided with
-		// another RBObject, then carry out the collision code.
-		if(!bypassRB && obj instanceof RBObject)
+		// another RBObject with the same settings, then carry out the collision code.
+		if(!bypassRB && obj instanceof RBObject && !((RBObject)obj).bypassRB())
 			hitRB((RBObject)obj);
 	}
 	

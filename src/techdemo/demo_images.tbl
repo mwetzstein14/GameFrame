@@ -1,0 +1,51 @@
+// Media table defining sprites, animations, and backdrop images for the tech demo.
+
+// Splash image displayed when game is loading:
+
+splash_image	-	0	Demo_Splash.gif		-
+
+// Images used for player (a ball launcher):
+
+player	-	0	Launcher.gif	-
+sight	-	0	Aim.gif			-
+
+// Images and animation used for balls launched by player:
+
+ball	-	0	Ball.gif		-
+
+fade_ball_sheet		Ball_Dim_Anim.png	0	0	12	12	0	0
+
+fade_anim1		-	0	fade_ball_sheet		0	-
+fade_anim2		-	0	fade_ball_sheet		1	-
+fade_anim3		-	0	fade_ball_sheet		2	-
+
+fade_ball		fade_anim1;fade_anim2;fade_anim3	0.5
+
+// Images used for enemies (diamond shaped flyers):
+
+diamond			-	0	Enemy.gif			-
+diamond_dead	-	0	Enemy_Husk.gif		-
+
+// Images used for environment tiles:
+
+steel_block		S	1	Wall.gif	-
+rail			R	2	Rail.gif	-
+empty			.	0	null		-
+
+// Images used for explosion along with explosion animation:
+
+explosion_sheet		Boom_Anim.png	0	0	16	16	0	0
+
+boom1	-	0	explosion_sheet		0	-
+boom2	-	0	explosion_sheet		1	-
+boom3	-	0	explosion_sheet		2	-
+boom4	-	0	explosion_sheet		3	-
+boom5	-	0	explosion_sheet		4	-
+boom6	-	0	explosion_sheet		5	-
+boom7	-	0	explosion_sheet		6	-
+
+explosion		boom1;boom2;boom3;boom4;boom5;boom6;boom7	0.2	
+
+// A debris image, used for particles that appear when walls are hit or things break apart:
+
+debris		-	0	Debris.gif	-

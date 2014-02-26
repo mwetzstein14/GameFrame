@@ -65,9 +65,9 @@ public abstract class GameFrame extends JGEngine
 	// Constructor if your game is being launched as an application. Call this super constructor in
 	// your class's constructor and pass it a JGPoint containing the dimensions of the screen in 
 	// pixels.
-	public GameFrame(JGPoint size)
+	public GameFrame(JGPoint screenSize)
 	{
-		initEngine(size.x, size.y);
+		initEngine(screenSize.x, screenSize.y);
 	}
 	
 	// Constructor if your game is being launched as an applet. Call this super constructor in your
