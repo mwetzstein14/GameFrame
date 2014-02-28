@@ -2110,27 +2110,50 @@ public class Actor extends RBObject
 	{	
 		// First find the angle and magnitude of the component of the Actor's velocity in the 
 		// direction of the acceleration you want to add.
-		double angle  = velocity.angleWithVec(selfAccel);
+		double angleBtwn  = velocity.angleWithVec(selfAccel);
 		double mag;
 		
 		// Get the magnitude differently, depending on whether we're using radians or not. 
 		if(Vec2D.useRadians)
 		{	
-			mag = Math.cos(angle)*velocity.getMag();
+			mag = Math.cos(angleBtwn)*velocity.getMag();
 		}
 		else
 		{
-			mag = Math.cos(Math.toRadians(angle))*velocity.getMag();
+			mag = Math.cos(Math.toRadians(angleBtwn))*velocity.getMag();
 		}
 		
 		// Use the angle and magnitude to create the vector that is the component of the Actor's
-		// velocity in the direction of selfAccel.
-		Vec2D accelComp = new Vec2D(angle, mag);
+		// velocity in the direction of selfAccel (or in opposite direction if the angle between the
+		// two vectors is greater than 90 degrees).
+		Vec2D accelComp;
+		if(Vec2D.useRadians)
+		{
+			if(angleBtwn <= Math.PI/2)
+				accelComp = new Vec2D(selfAccel.getAngle(), mag);
+			else
+			{
+				accelComp = new Vec2D(selfAccel.getAngle(), mag);
+				accelComp = accelComp.getInverse();
+			}
+		}
+		else
+		{
+			if(angleBtwn <= 90)
+				accelComp = new Vec2D(selfAccel.getAngle(), mag);
+			else
+			{
+				accelComp = new Vec2D(selfAccel.getAngle(), mag);
+				accelComp = accelComp.getInverse();
+			}
+		}
 		
 		// If this component is already greater than maxSpeed, then the Actor has already exceeded
-		// its maximum self induced speed and no acceleration should be added. Method ends here if that
-		// condition is met. 
-		if(accelComp.getMag() < maxSpeed)
+		// its maximum self induced speed and no acceleration should be added. Method ends here if 
+		// that condition is met. 
+		if((accelComp.getMag() < maxSpeed && ((Vec2D.useRadians && angleBtwn <= Math.PI/2) || 
+				(!(Vec2D.useRadians) && angleBtwn <= 90))) || ((Vec2D.useRadians && angleBtwn > Math.PI/2) || 
+						(!(Vec2D.useRadians) && angleBtwn > 90)))
 		{
 			// Next, find what the component of velocity in the direction of selfAccel will be after
 			// selfAccel is added. 
@@ -2141,6 +2164,7 @@ public class Actor extends RBObject
 			// the acceleration of the Actor for this frame. 
 			if(nextComp.getMag() < maxSpeed)
 				accel.addVec(selfAccel);
+			
 			// Otherwise, the selfAccel vector we want to add is too big, and we instead should add the
 			// acceleration vector that will let the Actor obtain it's maximum self induced velocity. 
 			else

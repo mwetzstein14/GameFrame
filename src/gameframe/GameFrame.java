@@ -84,74 +84,54 @@ public abstract class GameFrame extends JGEngine
 	@Override
 	public void doFrame()
 	{
-		currentFrame++;
+		updateButtons(); // Update status of buttons to read new user input this frame.
+		
+		manageObjects(); // Manage game objects (mainly Actor objects).
+		moveObjects(); // Move game objects, used to implement gravity and force fields.
+		collideObjects(); // Process object-object collisions.
+		collideBG(); // Process object-tile collisions.
+		moveObjects(); // Move game objects again, used to actually move game objects this time. 
+		
+		currentFrame++; // Update the current number of frames that have passed.
 	}
 	
-	// The activities() methods below are used to properly update game objects which are created
-	// using classes in the GameFrame framework or classes derived from those classes. The 
-	// appropriate activities() method(s) should be called in doFrame() depending on what objects
-	// you want to be updated. 
-	
-	// The general purpose activities() method. Takes no parameters and updates all game objects as 
-	// well as all ActorManagers.
-	public void activities()
+	// This method is the first method called in do frame. Any method calls to ManagerList should be
+	// made in this method so that the doFrame() method will carry them out first. This method by
+	// default calls the destroyAll(), spawnAll, and routinesAll() methods of ManagerList, but may be
+	// overridden to make doFrame() call ManagerList methods that target ActorManagers with specific
+	// string IDs. You can also override this method in order to call routine methods for Actors 
+	// which are not managed by an ActorManager or do any other management necessary for such Actor
+	// objects.
+	public void manageObjects()
 	{
 		ManagerList.destroyAll();
 		ManagerList.spawnAll();
 		ManagerList.routinesAll();
-		
-		moveObjects();
-		checkCollision(0,0);
-		checkBGCollision(0,0);
-		moveObjects();
 	}
 	
-	// A version of activities() that lets one only update the ActorManagers whose String ID matches
-	// the argument passed through manid. All game objects are still updated. 
-	public void activities(String manid)
+	// This method should be overridden only to make calls to methods to check object-object 
+	// collisions that should be processed each frame. This method is called in doFrame() after
+	// manageObjects() and the first call to moveObjects(). 
+	public void collideObjects()
 	{
-		ManagerList.destroyID(manid);
-		ManagerList.spawnID(manid);
-		ManagerList.routinesID(manid);
 		
-		moveObjects();
-		checkCollision(0,0);
-		checkBGCollision(0,0);
-		moveObjects();
 	}
 	
-	// A version of activities() that lets one choose which game objects should be updated and 
-	// checked for collisions. The collision ID of the objects to be updated should be passed through
-	// objcid. The collision IDs of the other objects and tiles to check collisions against should be
-	// passed through srccid and tilecid. You can pass 0 through either of those parameters in order
-	// to have it check collisions against all other game objects or all tiles. All ActorManagers are
-	// still updated.
-	public void activities(int objcid, int srccid, int tilecid)
+	// This method should be overridden only to make calls to methods to check object-tile 
+	// collisions that should be processed each frame. This method is called in doFrame() after
+	// manageObjects(), the first call to moveObjects, and collideObjects().
+	public void collideBG()
 	{
-		ManagerList.destroyAll();
-		ManagerList.spawnAll();
-		ManagerList.routinesAll();
 		
-		moveObjects(null, objcid);
-		checkCollision(srccid, objcid);
-		checkBGCollision(tilecid, objcid);
-		moveObjects(null, objcid);
 	}
 	
-	// A version of activities() that combines the two above, letting you choose which ActorManagers
-	// and which game objects are updated (as well as what collisions are check for the game objects
-	// being updated). 
-	public void activities(String manid, int objcid, int srccid, int tilecid)
+	// Override this to print things other than environment and game objects to screen. 
+	@Override
+	public void paintFrame()
 	{
-		ManagerList.destroyID(manid);
-		ManagerList.spawnID(manid);
-		ManagerList.routinesID(manid);
 		
-		moveObjects(null, objcid);
-		checkCollision(srccid, objcid);
-		checkBGCollision(tilecid, objcid);
-		moveObjects(null, objcid);
 	}
+	
 	
 	/*
 	 * The GameFrame class can check input from a user/player. It can read input from both
@@ -172,8 +152,8 @@ public abstract class GameFrame extends JGEngine
 	public static final int RELEASE = 3; // Pass this as the state to checkButton() to see if the 
 		                          		 // Button has just been released. 
 
-	private Button[] buttonList; // An array containing all the Button objects for input that
-                                 // the Input class is tracking. 
+	private static Button[] buttonList; // An array containing all the Button objects for input that
+                                 		// the Input class is tracking. 
 
 	// Sets up the Input class so that it tracks all possible input (on a computer). 
 	public void trackAll()
@@ -292,7 +272,7 @@ public abstract class GameFrame extends JGEngine
 	// Checks the state of the button given by the key code passed through id for the given state 
 	// passed through state (either PRESS, HOLD, or RELEASE). Returns true if button is in given state
 	// and false if not. 
-	public boolean checkButton(int id, int state)
+	public static boolean checkButton(int id, int state)
 	{
 		// Find Button object for button with key code id.
 		for(Button b : buttonList)
@@ -307,7 +287,7 @@ public abstract class GameFrame extends JGEngine
 	// Checks the state of the button given by the character passed through id for the given state 
 	// passed through state (either PRESS, HOLD, or RELEASE). Returns true if button is in given state
 	// and false if not. 
-	public boolean checkButton(char id, int state)
+	public static boolean checkButton(char id, int state)
 	{
 		// Find Button object for button represented by character id.
 		for(Button b : buttonList)

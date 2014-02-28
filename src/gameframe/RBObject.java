@@ -45,28 +45,17 @@ public class RBObject extends JGObject
 						   // xspeed and yspeed (JGObject attributes) every frame. 
 	public Vec2D accel; // The acceleration of the RBObject, or change in velocity every frame.
 						// Forces add to acceleration, which then gets added to velocity in the 
-						// move() method and reset to zero so that constant forces do not compound. 
-	public Vec2D jerk; // In physics, jerk is the change in acceleration (the acceleration of 
-					   // acceleration if you will). For the purposes of the RBObject though, it is
-					   // the same as acceleration except that it is not reset to zero each frame. 
+						// move() method and reset to zero so that constant forces do not compound.  
 	
 	protected boolean gravitate; // Set to true for RBObject to be accelerated by gravity (set with 
 							     // Gravity class) or false to ignore gravity. 
 	protected boolean insulate; // Set to true for RBObject to retain its electric charge during 
 							    // collisions or to false for it to share charge during a collision.
 	
-	protected ArrayList<Integer> lastTiles = new ArrayList<Integer>(); // The collision IDs of the  
-																	   // last tiles that triggered a  
-																	   // call to the hit_bg() method 
-																	   // during a frame.
-	
-	protected ArrayList<Integer> lastSurfaces = new ArrayList<Integer>(); // The collision IDs of the
-																		  // tiles that triggered a 
-																		  // call to the hit_bg()
-																		  // method last frame, used
-																		  // to identity the Surfaces
-																		  // which were last made 
-																		  // contact with.
+	protected int lastSurfaces = 0; // The OR of all the collision IDs of tiles that this RBObject
+									// collided with last frame (OR means all of them added 
+									// together). Used to identify the Surface objects associated
+									// with those tiles.
 	
 	protected ArrayList<Integer> lastFields = new ArrayList<Integer>(); // The ID of the ForceFields
 																	    // that the RBObject was under
@@ -99,7 +88,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -125,7 +114,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -153,7 +142,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -181,7 +170,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -207,7 +196,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -235,7 +224,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -263,7 +252,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -292,7 +281,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -320,7 +309,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -349,7 +338,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -376,7 +365,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -405,7 +394,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -434,7 +423,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -461,7 +450,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -489,7 +478,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -518,7 +507,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -548,7 +537,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -576,7 +565,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = true;
 		insulate = true;
@@ -606,7 +595,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -633,7 +622,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -662,7 +651,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -691,7 +680,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -718,7 +707,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -746,7 +735,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -775,7 +764,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -805,7 +794,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -834,7 +823,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -864,7 +853,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -892,7 +881,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -922,7 +911,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -952,7 +941,7 @@ public class RBObject extends JGObject
 		
 		velocity = new Vec2D(new Coord(0.0, 0.0));
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -980,7 +969,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -1009,7 +998,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -1039,7 +1028,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -1070,7 +1059,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -1099,7 +1088,7 @@ public class RBObject extends JGObject
 		
 		velocity = vel;
 		accel = new Vec2D(new Coord(0.0, 0.0));
-		jerk = new Vec2D(new Coord(0.0, 0.0));
+		
 		
 		gravitate = grav;
 		insulate = insul;
@@ -1160,28 +1149,11 @@ public class RBObject extends JGObject
 		return momentum;
 	}
 	
-	// Returns true if the given collision ID matches any of the collision IDs of tiles that the
-	// RBObject has already collided with during a frame. 
-	public boolean matchTile(int id)
-	{
-		for(int lt : lastTiles)
-		{
-			if(lt == id)
-				return true;
-		}
-		return false;
-	}
-	
 	// Returns true if the given collision ID matches any of the collision IDs of tiles associated
 	// with Surfaces that the RBObject collided with last frame. 
 	public boolean matchSurface(int id)
 	{
-		for(int lt : lastSurfaces)
-		{
-			if(lt == id)
-				return true;
-		}
-		return false;
+		return and(id, lastSurfaces);
 	}
 	
 	// Takes a force and determines the acceleration vector that should be added to accel.
@@ -1341,7 +1313,7 @@ public class RBObject extends JGObject
 		if(!bypassTile)
 		{
 			// For every surface object in Surface.list, check to see if the surface should be used
-			// if this RBObject collides with a tile whose collision ID is tilecid.
+			// if this RBObject collides with a tile whose collision ID is found in the OR of tilecid.
 			for(Surface surface : Surface.list)
 			{
 				// If a surface that should be used is found:
@@ -1354,13 +1326,10 @@ public class RBObject extends JGObject
 					// using the surface.
 					addForce(surface.slide(this, tilecid, tx, ty, txsize, tysize));
 					
-					lastSurfaces.add(tilecid); // Add ID of associated tile to list of last Surface
-											   // objects to interact with this RBObject (Surfaces
-											   // identified by their associated tiles). 
+					lastSurfaces = tilecid; // Set lastSurfaces equal to the OR of the tiles collided
+											// with this frame. 
 				}
 			}
-			lastTiles.add(tilecid); // Add the tile collision ID to list of tiles last collided with
-									// during this frame. 
 		}
 		
 		
@@ -1380,6 +1349,10 @@ public class RBObject extends JGObject
 		// ForceFields.
 		if(beforeCollisions)
 		{
+			// So that the object doesn't actually move when move() is called before collisions. 
+			xspeed = 0;
+			yspeed = 0;
+			
 			// If this RBObject should be affected by gravity, then add the gravity acceleration
 			// vector.
 			if(gravitate)
@@ -1423,34 +1396,14 @@ public class RBObject extends JGObject
 			if(canMove) 
 			{	
 				velocity.addVec(accel);
-				velocity.addVec(jerk);
 				
 				xspeed = velocity.getXComp();
 				yspeed = velocity.getYComp();
-			}
-			
-			// If a tile collision ID is not in lastTiles, that means that the RBObject did not 
-			// collide with that that tile this frame or interact with any surfaces associated with 
-			// it, so the collision ID should be removed from lastSurfaces. 
-			for(int i = lastSurfaces.size()-1; i >= 0; i--)
-			{
-				boolean in = false;
 				
-				for(int lt : lastTiles)
-				{
-					if(lt == lastSurfaces.get(i))
-						in = true;
-				}
-				
-				if(!in)
-					lastSurfaces.remove(i);
-			}
-			
-			// Clear the ArrayList containing the collision IDs of the last tiles that this RBObject
-			// collided with this frame so that the ArrayList can be used again properly next frame.
-			for(int i = lastTiles.size()-1; i >= 0; i--)
-			{
-				lastTiles.remove(i);
+				// The fact that I need to add these next two lines of code is strange because the JGame engine
+				// claims to do this for me.
+				x += xspeed;
+				y += yspeed;
 			}
 		
 			accel = new Vec2D(0.0, 0.0); // Reset the acceleration vector to zero so that it does not

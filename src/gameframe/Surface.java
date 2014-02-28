@@ -2,6 +2,7 @@ package gameframe;
 
 import java.util.ArrayList;
 
+import jgame.JGObject;
 import jgame.JGRectangle;
 
 /*
@@ -90,22 +91,16 @@ public class Surface
 	}
 	
 	// Method that checks if the collision between a given tile and an RBObject should result in a
-	// collision or frictional force. Checks both if the tile is associated with the Surface and that
-	// the RBObject hasn't already collided with a tile of the same collision ID this frame. Returns
+	// collision or frictional force. Checks if the tile is associated with the Surface. Returns
 	// true if there should be a physical interaction and false if there should not. 
 	public boolean checkTileID(int tilecid, RBObject rb)
-	{
-		// If the RBObject this frame has already collided with a tile that has the same collision ID 
-		// as the tile it has just collided with, then return false.
-		if(rb.matchTile(tilecid))
-			return false;
-		
+	{		
 		// If the test above is passed (false is never returned), then check if the collision ID of
 		// the tile that the RBObject has just collided with matches any of the tile IDs that are
 		// associated with this Surface, then return true.
 		for(int i=0; i < tileIDs.length; i++)
 		{
-			if(tileIDs[i] == tilecid)
+			if(JGObject.and(tileIDs[i], tilecid))
 				return true;
 		}
 		
@@ -123,6 +118,10 @@ public class Surface
 		// It's easy to boil the choice of which side the RBObject is colliding with the tile down to
 		// two choices depending on the relative positions of the two. These variables keep track of
 		// which two choices are the possible correct choices.
+		
+		/**
+		 * To debug, let's try first printing what tx, ty, rb.x, rb.y, txsize, and tysize are.
+		 */
 		
 		boolean t_left = false; // Is either colliding with top or left side.
 		boolean t_right = false; // Is either colliding with top or right side.
@@ -165,9 +164,15 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+			{
+				rb.eng.dbgPrint("Left");
 				return LEFT;         // left. Return LEFT.
+			}
 			else // Otherwise it's above. Return TOP.
+			{
+				rb.eng.dbgPrint("Top");
 				return TOP;
+			}
 		}
 		else if(t_right) // If the two possible choices were top and right:
 		{
@@ -180,9 +185,15 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+			{
+				rb.eng.dbgPrint("Right");
 				return RIGHT;		 // right. Return RIGHT.
+			}
 			else // Otherwise it's above. Return TOP.
+			{
+				rb.eng.dbgPrint("Top");
 				return TOP;
+			}
 		}
 		else if(b_left) // If the two possible choices were bottom and left:
 		{
@@ -195,9 +206,15 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+			{
+				rb.eng.dbgPrint("Left");
 				return LEFT;         // left. Return LEFT.
+			}
 			else // Otherwise it's below. Return BOTTOM.
+			{
+				rb.eng.dbgPrint("Bottom");
 				return BOTTOM;
+			}
 		}
 		else // If the two possible choices were bottom and right:
 		{
@@ -211,9 +228,15 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+			{
+				rb.eng.dbgPrint("Right");
 				return RIGHT;        // right. Return RIGHT.
+			}
 			else // Otherwise it's below. Return BOTTOM.
+			{
+				rb.eng.dbgPrint("Bottom");
 				return BOTTOM;
+			}
 		}
 	}
 	
@@ -233,7 +256,7 @@ public class Surface
 	// The hit() method returns the impulse exerted on an RBObject that collides with a tile 
 	// associated with this Surface. 
 	public Vec2D hit(RBObject rb, int tilecid, int tx, int ty, int txsize, int tysize)
-	{
+	{	
 		// No need to calculate an impulse if the Surface is in the background. 
 		if(!background)
 		{

@@ -191,6 +191,26 @@ public class Vec2D
 	// Returns the angle that the vector is pointing in.
 	public double getAngle()
 	{
+		// To avoid dividing by zero later, return what the angle will be if the x_component happens
+		// to be zero. If the vector is a zero vector, it's angle will return as 90 degrees (down). 
+		if(x_component == 0.0)
+		{
+			if(useRadians)
+			{
+				if(y_component >= 0.0)
+					return Math.PI/2;
+				else
+					return 1.5*Math.PI;
+			}
+			else
+			{
+				if(y_component >= 0.0)
+					return 90;
+				else
+					return 270;
+			}
+		}
+		
 		// Angle shifted to first quadrant of unit circle. 
 		double angle = Math.abs(Math.atan(y_component/x_component));  
 			
@@ -227,6 +247,12 @@ public class Vec2D
 	// Returns the angle between the vector and vec.
 	public double angleWithVec(Vec2D vec)
 	{
+		// If this vector or the other vector (passed through the argument) is a zero vector, then
+		// the angle between the vectors is said to be zero. This is done to avoid dividing by zero
+		// later on.
+		if(getMag() == 0 || vec.getMag() == 0.0)
+			return 0.0;
+		
 		if(useRadians) // If using radians:
 			return Math.acos(dot(vec)/(getMag()*vec.getMag()));
 		else // If using degrees:

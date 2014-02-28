@@ -1,8 +1,8 @@
 package gameframe;
 
 /*
- * Projectile is a class used to create objects that are created by Actors (typically) as a method of
- * interaction with other Actors (a typical case of this is enemy missile, bullet, or laser attacks).
+ * Projectile is a class used to create objects that are created by Projectiles (typically) as a method of
+ * interaction with other Projectiles (a typical case of this is enemy missile, bullet, or laser attacks).
  * The default settings for a Projectile are a little different than that of an RBObjects in that 
  * they don't react to gravity or physical collisions with other RBObjects. This is because usually
  * Projectiles are intended to fly relatively straight if they are being used as an enemy attack, and
@@ -849,58 +849,81 @@ public class Projectile extends RBObject
 		return projectileCount;
 	}
 	
-	// A method used to make a Projectile accelerate itself. Use this method instead of adding to 
-	// acceleration directly if you are using the maxSpeed instance variable to control the maximum
-	// self induced speed of your Projectile object. 
-	protected void selfAccel(Vec2D selfAccel)
-	{	
-		// First find the angle and magnitude of the component of the Projectile's velocity in the 
-		// direction of the acceleration you want to add.
-		double angle  = velocity.angleWithVec(selfAccel);
-		double mag;
-		
-		// Get the magnitude differently, depending on whether we're using radians or not. 
-		if(Vec2D.useRadians)
+	// A method used to make an Projectile accelerate itself. Use this method instead of adding to 
+		// acceleration directly if you are using the maxSpeed instance variable to control the maximum
+		// self induced speed of your Projectile object. 
+		protected void selfAccel(Vec2D selfAccel)
 		{	
-			mag = Math.cos(angle)*velocity.getMag();
-		}
-		else
-		{
-			mag = Math.cos(Math.toRadians(angle))*velocity.getMag();
-		}
-		
-		// Use the angle and magnitude to create the vector that is the component of the Projectile's
-		// velocity in the direction of selfAccel.
-		Vec2D accelComp = new Vec2D(angle, mag);
-		
-		// If this component is already greater than maxSpeed, then the Projectile has already 
-		// exceeded its maximum self induced speed and no acceleration should be added. Method ends 
-		// here if that condition is met. 
-		if(accelComp.getMag() < maxSpeed)
-		{
-			// Next, find what the component of velocity in the direction of selfAccel will be after
-			// selfAccel is added. 
-			Vec2D nextComp = accelComp.copy();
-			nextComp.addVec(selfAccel);
+			// First find the angle and magnitude of the component of the Projectile's velocity in the 
+			// direction of the acceleration you want to add.
+			double angleBtwn  = velocity.angleWithVec(selfAccel);
+			double mag;
 			
-			// If the component will still be less than maxSpeed, then go ahead and add selfAccel to
-			// the acceleration of the Projectile for this frame. 
-			if(nextComp.getMag() < maxSpeed)
-				accel.addVec(selfAccel);
-			// Otherwise, the selfAccel vector we want to add is too big, and we instead should add 
-			// the acceleration vector that will let the Projectile obtain it's maximum self induced
-			// velocity. 
+			// Get the magnitude differently, depending on whether we're using radians or not. 
+			if(Vec2D.useRadians)
+			{	
+				mag = Math.cos(angleBtwn)*velocity.getMag();
+			}
 			else
 			{
-				// Find the difference between the maximum self induced velocity and the current 
-				// velocity component in the direction we want to accelerate.
-				Vec2D maxDiff = new Vec2D(accelComp.getAngle(), maxSpeed);
-				maxDiff.subtractVec(accelComp);
-				
-				accel.addVec(maxDiff); // Add the difference as an acceleration. 
+				mag = Math.cos(Math.toRadians(angleBtwn))*velocity.getMag();
 			}
-		}	
-	}
+			
+			// Use the angle and magnitude to create the vector that is the component of the Projectile's
+			// velocity in the direction of selfAccel (or in opposite direction if the angle between the
+			// two vectors is greater than 90 degrees).
+			Vec2D accelComp;
+			if(Vec2D.useRadians)
+			{
+				if(angleBtwn <= Math.PI/2)
+					accelComp = new Vec2D(selfAccel.getAngle(), mag);
+				else
+				{
+					accelComp = new Vec2D(selfAccel.getAngle(), mag);
+					accelComp = accelComp.getInverse();
+				}
+			}
+			else
+			{
+				if(angleBtwn <= 90)
+					accelComp = new Vec2D(selfAccel.getAngle(), mag);
+				else
+				{
+					accelComp = new Vec2D(selfAccel.getAngle(), mag);
+					accelComp = accelComp.getInverse();
+				}
+			}
+			
+			// If this component is already greater than maxSpeed, then the Projectile has already exceeded
+			// its maximum self induced speed and no acceleration should be added. Method ends here if 
+			// that condition is met. 
+			if((accelComp.getMag() < maxSpeed && ((Vec2D.useRadians && angleBtwn <= Math.PI/2) || 
+					(!(Vec2D.useRadians) && angleBtwn <= 90))) || ((Vec2D.useRadians && angleBtwn > Math.PI/2) || 
+							(!(Vec2D.useRadians) && angleBtwn > 90)))
+			{
+				// Next, find what the component of velocity in the direction of selfAccel will be after
+				// selfAccel is added. 
+				Vec2D nextComp = accelComp.copy();
+				nextComp.addVec(selfAccel);
+				
+				// If the component will still be less than maxSpeed, then go ahead and add selfAccel to
+				// the acceleration of the Projectile for this frame. 
+				if(nextComp.getMag() < maxSpeed)
+					accel.addVec(selfAccel);
+				
+				// Otherwise, the selfAccel vector we want to add is too big, and we instead should add the
+				// acceleration vector that will let the Projectile obtain it's maximum self induced velocity. 
+				else
+				{
+					// Find the difference between the maximum self induced velocity and the current 
+					// velocity component in the direction we want to accelerate.
+					Vec2D maxDiff = new Vec2D(accelComp.getAngle(), maxSpeed);
+					maxDiff.subtractVec(accelComp);
+					
+					accel.addVec(maxDiff); // Add the difference as an acceleration. 
+				}
+			}	
+		}
 	
 	// Override to write code for actions that the Projectile should take before being destroyed, such 
 	// as cleanup, spawning new objects, etc. Call the super method to make sure that your Projectile

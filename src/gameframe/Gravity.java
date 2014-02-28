@@ -13,7 +13,7 @@ public abstract class Gravity
 	public static boolean gravOn = false; // Set to true for RBObjects to be affected by gravity.
 	                                      // Set to false to turn off gravity. 
 	
-	public static Vec2D g = new Vec2D(new Coord(0, -1)); // Vector representing magnitude and 
+	public static Vec2D g = new Vec2D(new Coord(0.0, 1.0)); // Vector representing magnitude and 
 	                                                     // direction of g. 
 	
 	// Used to set g to another vector.
