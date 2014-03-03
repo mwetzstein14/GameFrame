@@ -3,6 +3,7 @@ package gameframe;
 import java.util.ArrayList;
 
 import jgame.JGObject;
+import jgame.JGPoint;
 import jgame.JGRectangle;
 
 /*
@@ -13,14 +14,14 @@ import jgame.JGRectangle;
  * are contained in a Surface object's tileIDs array are considered associated with that Surface 
  * RBObjects will experience frictional forces when moving across or against tiles associated with a
  * Surface. They may also land on or bounce off of a tile associated with a Surface if the Surface is
- * not considered a background Surface. The reason a Surface object may be associated with more than
- * one tile collision ID is so that collisions with corners (two tiles positioned so that an RBObject
+ * not considered a background Surface. Collisions with corners (two tiles positioned so that an RBObject
  * may collide with both of them in the same frame but are not part of the same wall, floor, or
- * ceiling) may work properly. If two tiles use the same Surface, then an RBObject should not have a 
- * collision with both tiles in the same frame unless they form a corner. The Surface class does not
- * allow collisions with multiple tiles of the same collision ID, so a different collision ID should
- * be used for tiles that use the same Surface but are part of a different wall, floor, or ceiling so
- * that corners may be implemented properly. 
+ * ceiling) need two Surface object to work properly. If two tiles use the same Surface, then an 
+ * RBObject should not have a collision with both tiles in the same frame unless they form a corner. 
+ * The Surface class does not allow collisions with multiple tiles associate with the same Surface
+ * object, so a different Surface object should be used for tiles that seem to use the same Surface 
+ * but are part of a different wall, floor, or ceiling so that corners may be implemented properly. 
+ * Corner tiles also both need to have different collision IDs. 
  */
 
 public class Surface 
@@ -115,13 +116,48 @@ public class Surface
 	{
 		// This code assumes that the origin is in the top left of the screen.  
 		
+		JGPoint[][] tiles = new JGPoint[txsize][tysize]; // Array that will contain the indicies of 
+														 // all the tiles that the RBObject is 
+														 // overlapping. 
+		JGPoint tileHit = new JGPoint(0, 0); // This will contain the coordinate of the top left 
+											 // corner of the tile that this RBObject collided with
+											 // to trigger this Surface.
+		
+		// The following process determines the coordinate that will be stored in tileHit.
+		
+		// First, find all the indicies of the tiles that the RBObject is currently overlapping
+		// using  the top left tile's indicies passed through tx and ty and the number of tiles 
+		// overlapped in the x and y directions passed through txsize and tysize.
+		for(int i = 0; i < txsize; i++)
+		{
+			for(int j = 0; j < tysize; j++)
+			{
+				tiles[i][j] = new JGPoint(tx+i, ty+j);
+			}
+		}
+		
+		// Next, for each tile that the RBObject is overlapping, check if the collision ID of that
+		// tile matches a collision ID of a tile that this Surface is associated with. 
+		for(int i = 0; i < txsize; i++)
+		{
+			for(int j = 0; j < tysize; j++)
+			{
+				for(int k = 0; k < tileIDs.length; k++)
+				{
+					// If it's a match...
+					if(rb.eng.getTileCid(tiles[i][j].x, tiles[i][j].y) == tileIDs[k])
+					{
+						// Get the coordinate of the top left of that tile and set tileHit equal to it.
+						tileHit = rb.eng.getTileCoord(tiles[i][j]);
+						break;
+					}
+				}
+			}
+		}
+		
 		// It's easy to boil the choice of which side the RBObject is colliding with the tile down to
 		// two choices depending on the relative positions of the two. These variables keep track of
 		// which two choices are the possible correct choices.
-		
-		/**
-		 * To debug, let's try first printing what tx, ty, rb.x, rb.y, txsize, and tysize are.
-		 */
 		
 		boolean t_left = false; // Is either colliding with top or left side.
 		boolean t_right = false; // Is either colliding with top or right side.
@@ -129,11 +165,11 @@ public class Surface
 		boolean b_right = false; // Is either colliding with bottom or right side. 
 		
 		// Find which combination of sides is possible:
-		if(rb.y < (double)ty && rb.x < (double)tx) // If RBObject is above to the left.
+		if(rb.y < (double)tileHit.y && rb.x < (double)tileHit.x) // If RBObject is above to the left.
 			t_left = true;
-		else if(rb.y < (double)ty && rb.x >= (double)tx) // If RBObject is above to the right. 
+		else if(rb.y < (double)tileHit.y && rb.x >= (double)tileHit.x) // If RBObject is above to the right. 
 			t_right = true;
-		else if(rb.y >= (double)ty && rb.x < (double)tx) // If RBObject is below to the left.
+		else if(rb.y >= (double)tileHit.y && rb.x < (double)tileHit.x) // If RBObject is below to the left.
 			b_left = true;
 		else // If no other cases were true, then RBObject must be below to the right. 
 			b_right = true;
@@ -155,7 +191,7 @@ public class Surface
 		if(t_left) // If the two possible choices were top and left:
 		{
 			// Find coordinates of a top and a bottom corner of bounding box intersection.
-			topIntersect = new Coord((double)tx, (double)ty);
+			topIntersect = new Coord((double)tileHit.x, (double)tileHit.y);
 			bottomIntersect = new Coord(rb.x + (double)rbDimensions.width, 
 					rb.y + (double)rbDimensions.height);
 			
@@ -177,13 +213,14 @@ public class Surface
 		else if(t_right) // If the two possible choices were top and right:
 		{
 			// Find coordinates of a top and a bottom corner of bounding box intersection.
-			topIntersect = new Coord((double)tx + (double)txsize, (double)ty);
+			topIntersect = new Coord((double)tileHit.x + (double)(JGObject.tilewidth-1), 
+					(double)tileHit.y);
 			bottomIntersect = new Coord(rb.x, rb.y + (double)rbDimensions.height);
 			
 			// Calculate the height and width of the intersection.
 			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
-			
+
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
 			{
 				rb.eng.dbgPrint("Right");
@@ -199,7 +236,8 @@ public class Surface
 		{
 			// Find coordinates of a top and a bottom corner of bounding box intersection.
 			topIntersect = new Coord(rb.x + (double)rbDimensions.width, rb.y);
-			bottomIntersect = new Coord((double)tx, (double)ty + (double)tysize);
+			bottomIntersect = new Coord((double)tileHit.x, 
+					(double)tileHit.y + (double)(JGObject.tileheight-1));
 			
 			// Calculate the height and width of the intersection.
 			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
@@ -220,8 +258,8 @@ public class Surface
 		{
 			// Find coordinates of a top and a bottom corner of bounding box intersection.
 			topIntersect = new Coord(rb.x, rb.y);
-			bottomIntersect = new Coord((double)tx + (double)txsize,
-					(double)ty + (double)tysize);
+			bottomIntersect = new Coord((double)tileHit.x + (double)(JGObject.tilewidth-1),
+					(double)tileHit.y + (double)(JGObject.tileheight-1));
 			
 			// Calculate the height and width of the intersection.
 			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
@@ -291,6 +329,14 @@ public class Surface
 		
 			if(side == TOP) // If it struck the top side of the tile.
 			{
+				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
+				// of overlap so that friction still works).
+				JGRectangle bbox = rb.getBBox();
+				double rbx = rb.x;
+				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, true);
+				rb.x = rbx;
+				rb.y = rb.y+2;
+				
 				if(rbVel_i.getYComp() <= 0.0)   // If the RBObject is already moving away from the tile,
 					return new Vec2D(0.0, 0.0); // then the collision already happened and an impulse of
 											// zero should be returned.
@@ -304,6 +350,14 @@ public class Surface
 			// side of the tile. 
 			if(side == RIGHT)
 			{
+				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
+				// of overlap so that friction still works).
+				JGRectangle bbox = rb.getBBox();
+				double rby = rb.y;
+				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, false);
+				rb.x = rb.x-2;
+				rb.y = rby;
+				
 				if(rbVel_i.getXComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
@@ -314,6 +368,14 @@ public class Surface
 			// side of the tile. 
 			if(side == LEFT)
 			{
+				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
+				// of overlap so that friction still works).
+				JGRectangle bbox = rb.getBBox();
+				double rby = rb.y;
+				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, true);
+				rb.x = rb.x+2;
+				rb.y = rby;
+				
 				if(rbVel_i.getXComp() <= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
@@ -324,6 +386,14 @@ public class Surface
 			// side of the tile. 
 			if(side == BOTTOM)
 			{
+				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
+				// of overlap so that friction still works).
+				JGRectangle bbox = rb.getBBox();
+				double rbx = rb.x;
+				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, true);
+				rb.x = rbx;
+				rb.y = rb.y-2;
+				
 				if(rbVel_i.getYComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
 				

@@ -5,7 +5,8 @@ import gameframe.*;
 
 public class GF_Tech_Demo extends GameFrame {
 	
-	SteelSurface steel;
+	SteelSurface steelV;
+	SteelSurface steelH;
 	Launcher player;
 
 	public static void main(String[] args) 
@@ -67,7 +68,8 @@ public class GF_Tech_Demo extends GameFrame {
 		Gravity.gravOn = true;
 		Gravity.set_g(new Vec2D(90.0, 0.01));
 		
-		steel = new SteelSurface();
+		steelV = new SteelSurface(new int[] {1});
+		steelH = new SteelSurface(new int[] {2});
 		
 		player = new Launcher();
 	}

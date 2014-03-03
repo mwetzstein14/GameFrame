@@ -4,8 +4,8 @@ import gameframe.Surface;
 
 public class SteelSurface extends Surface 
 {
-	public SteelSurface()
+	public SteelSurface(int[] cids)
 	{
-		super(new int[] {1, 2}, 0.1, 0.1, 0.7, false);
+		super(cids, 0.1, 0.1, 0.7, false);
 	}
 }
