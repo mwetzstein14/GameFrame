@@ -200,15 +200,9 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-			{
-				rb.eng.dbgPrint("Left");
 				return LEFT;         // left. Return LEFT.
-			}
 			else // Otherwise it's above. Return TOP.
-			{
-				rb.eng.dbgPrint("Top");
 				return TOP;
-			}
 		}
 		else if(t_right) // If the two possible choices were top and right:
 		{
@@ -222,15 +216,9 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-			{
-				rb.eng.dbgPrint("Right");
 				return RIGHT;		 // right. Return RIGHT.
-			}
 			else // Otherwise it's above. Return TOP.
-			{
-				rb.eng.dbgPrint("Top");
 				return TOP;
-			}
 		}
 		else if(b_left) // If the two possible choices were bottom and left:
 		{
@@ -244,15 +232,9 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-			{
-				rb.eng.dbgPrint("Left");
 				return LEFT;         // left. Return LEFT.
-			}
 			else // Otherwise it's below. Return BOTTOM.
-			{
-				rb.eng.dbgPrint("Bottom");
 				return BOTTOM;
-			}
 		}
 		else // If the two possible choices were bottom and right:
 		{
@@ -266,15 +248,9 @@ public class Surface
 			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
 			
 			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-			{
-				rb.eng.dbgPrint("Right");
 				return RIGHT;        // right. Return RIGHT.
-			}
 			else // Otherwise it's below. Return BOTTOM.
-			{
-				rb.eng.dbgPrint("Bottom");
 				return BOTTOM;
-			}
 		}
 	}
 	
@@ -339,11 +315,11 @@ public class Surface
 				
 				if(rbVel_i.getYComp() <= 0.0)   // If the RBObject is already moving away from the tile,
 					return new Vec2D(0.0, 0.0); // then the collision already happened and an impulse of
-											// zero should be returned.
+												// zero should be returned.
 			
 				// If the RBObject was moving toward the tile, then change the final velocity to bounce
 				// away.
-				rbVel_f.setVec(rbVel_f.getXComp(), -1.0*rbVel_f.getYComp());
+				rbVel_f.setVec(new Coord(rbVel_f.getXComp(), -1.0*rbVel_f.getYComp()));
 			}
 			
 			// Same as the code above, except edited to work if the RBObject is colliding with the right
@@ -361,7 +337,7 @@ public class Surface
 				if(rbVel_i.getXComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
-				rbVel_f.setVec(-1.0*rbVel_f.getXComp(), rbVel_f.getYComp());
+				rbVel_f.setVec(new Coord(-1.0*rbVel_f.getXComp(), rbVel_f.getYComp()));
 			}
 			
 			// Same as the code above, except edited to work if the RBObject is colliding with the left
@@ -379,7 +355,7 @@ public class Surface
 				if(rbVel_i.getXComp() <= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
-				rbVel_f.setVec(-1.0*rbVel_f.getXComp(), rbVel_f.getYComp());
+				rbVel_f.setVec(new Coord(-1.0*rbVel_f.getXComp(), rbVel_f.getYComp()));
 			}
 		
 			// Same as the code above, except edited to work if the RBObject is colliding with the bottom
@@ -397,7 +373,7 @@ public class Surface
 				if(rbVel_i.getYComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
-				rbVel_f.setVec(rbVel_f.getXComp(), -1.0*rbVel_f.getYComp());
+				rbVel_f.setVec(new Coord(rbVel_f.getXComp(), -1.0*rbVel_f.getYComp()));
 			}
 		
 			// Use the difference between the initial and final velocity of the RBObject to calculate the
@@ -447,8 +423,8 @@ public class Surface
 			if(rb.x == rb.getLastX() && rb.y == rb.getLastY())
 			{
 				fricCoeff = rb.getCoeff()*coeffS; // Calculate the coefficient of friction using
-											  	// the RBObject's partial coefficient and the
-											  	// Surface's static partial coefficient.
+											  	  // the RBObject's partial coefficient and the
+											   	  // Surface's static partial coefficient.
 				
 				moving = false; // Record that the RBObject is stationary. 
 			}
@@ -457,8 +433,8 @@ public class Surface
 			else
 			{
 				fricCoeff = rb.getCoeff()*coeffK; // Calculate the coefficient of friction using
-			  								  	// the RBObject's partial coefficient and the
-			  								  	// Surface's kinetic partial coefficient.
+			  								  	  // the RBObject's partial coefficient and the
+			  								  	  // Surface's kinetic partial coefficient.
 				
 				moving = true; // Record that the RBObject is moving. 
 			}

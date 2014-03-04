@@ -80,7 +80,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -106,7 +106,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -134,7 +134,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -162,7 +162,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -188,7 +188,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -216,7 +216,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -244,7 +244,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -273,7 +273,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -301,7 +301,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -587,7 +587,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -614,7 +614,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -643,7 +643,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -672,7 +672,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -699,7 +699,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -727,7 +727,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -756,7 +756,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -786,7 +786,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -815,7 +815,7 @@ public class RBObject extends JGObject
 		rbCount++;
 		startFrame = start;
 		
-		mass = 1.0;
+		mass = 10.0;
 		charge = 0.0;
 		nextCharge = charge; // Charge for next frame will be the starting charge.
 		coeff = 1.0;
@@ -1318,13 +1318,13 @@ public class RBObject extends JGObject
 			{
 				// If a surface that should be used is found:
 				if(surface.checkTileID(tilecid, this))
-				{
-					// Add the impulse that should result from the RBObject colliding with the 
-					// tile using the surface.
-					addImpulse(surface.hit(this, tilecid, tx, ty, txsize, tysize));
+				{	
 					// Add the force that should result from the RBObject sliding against the tile 
 					// using the surface.
 					addForce(surface.slide(this, tilecid, tx, ty, txsize, tysize));
+					// Add the impulse that should result from the RBObject colliding with the 
+					// tile using the surface.
+					addImpulse(surface.hit(this, tilecid, tx, ty, txsize, tysize));
 					
 					lastSurfaces = tilecid; // Set lastSurfaces equal to the OR of the tiles collided
 											// with this frame. 

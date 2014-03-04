@@ -112,8 +112,8 @@ public class Vec2D
 	// Multiply the current magnitude by scalar. 
 	public void scaleMag(double scalar)
 	{
-		x_component *= scalar;
-		y_component *= scalar;
+		x_component = x_component*scalar;
+		y_component = y_component*scalar;
 	}
 	
 	// Add angle (argument) to the current angle of the vector's direction. 
@@ -155,7 +155,7 @@ public class Vec2D
 	// Returns a Vec2D vector pointing in the opposite direction as the vector with the same magnitude.
 	public Vec2D getInverse()
 	{
-		return new Vec2D(new Coord(-x_component, -y_component));
+		return new Vec2D(new Coord(-1.0*x_component, -1.0*y_component));
 	}
 	
 	// Returns a Vec2D vector with the same magnitude and direction as the x_component of the vector.

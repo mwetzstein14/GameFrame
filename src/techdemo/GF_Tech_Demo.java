@@ -7,6 +7,7 @@ public class GF_Tech_Demo extends GameFrame {
 	
 	SteelSurface steelV;
 	SteelSurface steelH;
+	RailingSurface railing;
 	Launcher player;
 
 	public static void main(String[] args) 
@@ -70,6 +71,7 @@ public class GF_Tech_Demo extends GameFrame {
 		
 		steelV = new SteelSurface(new int[] {1});
 		steelH = new SteelSurface(new int[] {2});
+		railing = new RailingSurface(new int[] {4});
 		
 		player = new Launcher();
 	}
