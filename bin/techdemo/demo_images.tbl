@@ -8,6 +8,7 @@ splash_image	-	0	Demo_Splash.gif		-
 
 player	-	0	Launcher.gif	-
 sight	-	0	Aim.gif			-
+null	-	0	Null.gif		-
 
 // Images and animation used for balls launched by player:
 
@@ -19,7 +20,7 @@ fade_anim1		-	0	fade_ball_sheet		0	-
 fade_anim2		-	0	fade_ball_sheet		1	-
 fade_anim3		-	0	fade_ball_sheet		2	-
 
-fade_ball		fade_anim1;fade_anim2;fade_anim3	0.5
+fade_ball		fade_anim1;fade_anim2;fade_anim3	50
 
 // Images used for enemies (diamond shaped flyers):
 
@@ -50,6 +51,10 @@ explosion		boom1;boom2;boom3;boom4;boom5;boom6;boom7	0.2
 // A debris image, used for particles that appear when walls are hit or things break apart:
 
 debris		-	0	Debris.gif	-
+
+// Spark image, used for particles that appear when the launcher is moving on rails:
+
+spark		-	0	Spark.gif	-
 
 // Crosshairs used to aim balls launched from launcher (oops, spelt "crosshairs" wrong for file name):
 

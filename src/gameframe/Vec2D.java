@@ -139,8 +139,7 @@ public class Vec2D
 	// Sets the magnitude of the vector to one. Keeps same direction.
 	public void normalize()
 	{
-		x_component /= getMag();
-		y_component /= getMag();
+		setVec(getAngle(), 1.0);
 	}
 	
 	// Returns a Vec2D vector pointing in the same direction as the vector with magnitude one. 

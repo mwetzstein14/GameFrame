@@ -2537,6 +2537,8 @@ public class Actor extends RBObject
 		@Override
 		public void move()
 		{
+			updateOffset();
+			
 			x = master.x + xOffset;
 			y = master.y + yOffset;
 		}

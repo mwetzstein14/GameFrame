@@ -5,6 +5,11 @@ import gameframe.*;
 
 public class GF_Tech_Demo extends GameFrame {
 	
+	public static double mouseX = 0;
+	public static double mouseY = 0;
+	
+	public int score = 0;
+	
 	SteelSurface steelV;
 	SteelSurface steelH;
 	RailingSurface railing;
@@ -66,8 +71,13 @@ public class GF_Tech_Demo extends GameFrame {
 		
 		setCursor(null);
 		
+		Vec2D.useRadians = false;
+		
 		Gravity.gravOn = true;
 		Gravity.set_g(new Vec2D(90.0, 0.01));
+		
+		Particle.maxParticles = 100;
+		Projectile.maxProjectiles = 30;
 		
 		steelV = new SteelSurface(new int[] {1});
 		steelH = new SteelSurface(new int[] {2});
@@ -79,6 +89,9 @@ public class GF_Tech_Demo extends GameFrame {
 	@Override
 	public void manageObjects()
 	{
+		mouseX = getMouseX();
+		mouseY = getMouseY();
+		
 		player.routine();
 		
 		super.manageObjects();
@@ -87,19 +100,27 @@ public class GF_Tech_Demo extends GameFrame {
 	@Override
 	public void collideObjects()
 	{
-		
+		checkCollision(8, 8);
 	}
 	
 	@Override
 	public void collideBG()
 	{
 		checkBGCollision(1+2+4, 1);
+		checkBGCollision(1+2+4, 2);
+		checkBGCollision(1+2+4, 4);
+		checkBGCollision(1+2+4, 8);
 	}
 	
 	@Override
 	public void paintFrame()
 	{
 		drawImage(getMouseX() - 8.0, getMouseY() - 8.0, "crosshairs");
+		
+		drawString("Mass: " + (float)player.getBallMass(), 8.0, 4.0, -1);
+		drawString("Charge: " + (float)player.getBallCharge(), 72.0, 4.0, -1);
+		drawString("Velocity: " + (float)player.getBallSpeed(), 136.0, 4.0, -1);
+		drawString("Score: " + score, 250.0, 4.0, -1);
 	}
 	
 	class Crosshairs extends JGObject

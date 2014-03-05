@@ -181,7 +181,7 @@ public class Surface
 		// determine which of the two possible choices is correct.
 		
 		// Get the default bounding box of the RBObject with the same dimensions as its sprite.
-		JGRectangle rbDimensions = rb.getImageBBox();
+		JGRectangle rbDimensions = rb.getBBox();
 		
 		// These coordinates will hold one of the top and one of the bottom corners of the rectangle
 		// that is the intersection between the bounding box of the RBObject and of the tile. 
@@ -305,13 +305,9 @@ public class Surface
 		
 			if(side == TOP) // If it struck the top side of the tile.
 			{
-				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
-				// of overlap so that friction still works).
-				JGRectangle bbox = rb.getBBox();
-				double rbx = rb.x;
-				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, true);
-				rb.x = rbx;
-				rb.y = rb.y+2;
+				// First push RBObject so that it is no longer overlapping with the tile.
+				rb.x = rb.getLastX();
+				rb.y = rb.getLastY();
 				
 				if(rbVel_i.getYComp() <= 0.0)   // If the RBObject is already moving away from the tile,
 					return new Vec2D(0.0, 0.0); // then the collision already happened and an impulse of
@@ -326,13 +322,9 @@ public class Surface
 			// side of the tile. 
 			if(side == RIGHT)
 			{
-				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
-				// of overlap so that friction still works).
-				JGRectangle bbox = rb.getBBox();
-				double rby = rb.y;
-				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, false);
-				rb.x = rb.x-2;
-				rb.y = rby;
+				// First push RBObject so that it is no longer overlapping with the tile.
+				rb.x = rb.getLastX();
+				rb.y = rb.getLastY();
 				
 				if(rbVel_i.getXComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
@@ -344,13 +336,9 @@ public class Surface
 			// side of the tile. 
 			if(side == LEFT)
 			{
-				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
-				// of overlap so that friction still works).
-				JGRectangle bbox = rb.getBBox();
-				double rby = rb.y;
-				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, true);
-				rb.x = rb.x+2;
-				rb.y = rby;
+				// First push RBObject so that it is no longer overlapping with the tile.
+				rb.x = rb.getLastX();
+				rb.y = rb.getLastY();
 				
 				if(rbVel_i.getXComp() <= 0.0)
 					return new Vec2D(0.0, 0.0);
@@ -362,13 +350,9 @@ public class Surface
 			// side of the tile. 
 			if(side == BOTTOM)
 			{
-				// First push RBObject so that it is no longer overlapping with the tile (leave a pixel
-				// of overlap so that friction still works).
-				JGRectangle bbox = rb.getBBox();
-				double rbx = rb.x;
-				rb.snapBBoxToGrid(bbox.width/2, bbox.height/2, false, true);
-				rb.x = rbx;
-				rb.y = rb.y-2;
+				// First push RBObject so that it is no longer overlapping with the tile.
+				rb.x = rb.getLastX();
+				rb.y = rb.getLastY();
 				
 				if(rbVel_i.getYComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
@@ -392,7 +376,8 @@ public class Surface
 	// a tile associated with this Surface. It only returns a force if it is not the first frame that
 	// the RBObject has made contact with the associated tile. This method is also responsbile for
 	// calling either the firstContact() or onContact() method, depending on whether this is the
-	// first frame the RBObject made contact with the associated tile. 
+	// first frame the RBObject made contact with the associated tile. Frictional forces are only 
+	// exerted by background tiles.
 	public Vec2D slide(RBObject rb, int tilecid, int tx, int ty, int txsize, int tysize)
 	{
 		// If this is the first frame the RBObject has mad contact with the tile, then a fricitonal 
@@ -403,272 +388,48 @@ public class Surface
 													  // with the tile.
 			return new Vec2D(0.0, 0.0); // Return a frictional force of zero. 
 		}
+		
 		// If this is not the first frame the RBObject has made contact with the tile, then find a
 		// frictional force to exert and call the onContact() method. 
-		else
-		{
-			onContact(rb, tx, ty, txsize, tysize); // Perform actions upon continually making contact
-												   // with the tile.
-			
-			// The magnitude of the frictional force exerted on an object is calculated by 
-			// multiplying the coefficient of friction by the normal force an object is exerting on
-			// the surface it's making contact with. 
-			
-			double fricCoeff; // Will hold the coefficient of friction.
-			boolean moving; // A different frictional force is exerted depending on whether the
-							// object is moving (kinetic) or still (static). This will be used to 
-							// tell whether the RBObject is moving or not. 
-			
-			// If the RBObject hasn't moved from its position last frame, then use static friction.
-			if(rb.x == rb.getLastX() && rb.y == rb.getLastY())
-			{
-				fricCoeff = rb.getCoeff()*coeffS; // Calculate the coefficient of friction using
-											  	  // the RBObject's partial coefficient and the
-											   	  // Surface's static partial coefficient.
-				
-				moving = false; // Record that the RBObject is stationary. 
-			}
-			
-			// If the RBObject is moving, then use kinetic friction.
-			else
-			{
-				fricCoeff = rb.getCoeff()*coeffK; // Calculate the coefficient of friction using
-			  								  	  // the RBObject's partial coefficient and the
-			  								  	  // Surface's kinetic partial coefficient.
-				
-				moving = true; // Record that the RBObject is moving. 
-			}
-			
-			// How to calculate the frictional force if the Surface is in the background.
-			if(!background)
-			{	
-				// Determine what side of the tile the RBObject is colliding with, necessary to find the
-				// direction of the resulting frictional force.
-				int side = findSide(rb, tx, ty, txsize, tysize); 
-			
-				// The direction of the frictional force will be either to the left or right if the
-				// RBObject is above or below the tile. The exact direction is whichever one opposes the
-				// motion of the RBObject.
-				if(side == TOP || side == BOTTOM)
-				{
-					// Find the normal force the RBObject is exerting on the tile by getting the 
-					// component of it's acceleration towards the tile and multiplying it by its mass. 
-					Vec2D normForce = rb.accel.getYVec();
-					normForce.scaleMag(rb.getMass());
-					
-					// If the normal force actually happens to be pointing away from the tile, that means
-					// that the RBObject is moving away from the tile and isn't really exerting a normal
-					// force, so there should be no frictional force. In such a case, a frictional force
-					// of zero should be returned. 
-					if((side == TOP && normForce.getYComp() < 0.0))
-						return new Vec2D(0.0, 0.0);
-					if((side == BOTTOM && normForce.getYComp() > 0.0))
-						return new Vec2D(0.0, 0.0);
-					
-					// If the RBObject is moving, then calculate kinetic frictional force to return. 
-					if(moving)
-					{
-						// Create the fricional force with proper magnitude by multiplying the normal
-						// force by the coefficient of friction.
-						Vec2D friction = normForce;
-						friction.scaleMag(fricCoeff);
-						
-						// A copy of the RBObject's initial velocity, updated by adding acceleration of 
-						// the RBObject to take into account any collisions the RBObject has had with 
-						// other RBObjects and any forces exerted by ForceFields before calculating the
-						// frictional force.
-						Vec2D rbVel = rb.velocity.copy();
-						rbVel.addVec(rb.accel);
-						
-						// Change the direction of the frictional force to oppose the motion of the 
-						// RBObject. 
-						if(rbVel.getXComp() < 0.0)
-							friction.changeDir(0.0);
-						else
-						{
-							if(Vec2D.useRadians)
-								friction.changeDir(Math.PI);
-							else
-								friction.changeDir(180.0);
-						}
-					
-						// Calculate what the acceleration resulting from the frictional force will be on
-						// the RBObject. 
-						Vec2D fricAccel = friction.copy();
-						fricAccel.scaleMag(1.0/rb.getMass());
-						
-						// A frictional force will only continue to act until the object comes to a stop.
-						// If the frictional force that we are about to return is too large, it may cause
-						// the RBObject to begin to move in the other direction instead of slowing down
-						// to a stop. To prevent this, first check if the frictional force will indeed be
-						// too big by seeing if the acceleration cause by the frictional force is greater
-						// than the RBObject's velocity in the same dimension. If so, return a frictional
-						// force just big enough to make the RBObject stop instead. 
-						if(Math.abs(rbVel.getXComp()) < Math.abs(fricAccel.getXComp()))
-						{
-							// Calculate a frictional force just big enough to make the RBObject stop.
-							Vec2D stopFric = rbVel.getXVec().getInverse();
-							stopFric.scaleMag(rb.getMass());
-							
-							return stopFric; // Return that force instead. 
-						}
-						
-						return friction; // Return the originally intended frictional force if it passed 
-									 	 // the above test. 
-					}
-				
-					// If the RBObject is not moving, then exert a static frictional force. A static
-					// frictional force is just big enough to keep an object from moving along a surface,
-					// but has a maximum magnitude determined by the normal force of the object on the 
-					// surface and the static coefficient of friction.
-					else
-					{
-						// Calculate the maximum possible acceleration that may result from a static
-						// frictional force by first calculating the maximum static frictional force from
-						// the normal force and then dividing it by the mass of the RBObject. 
-						Vec2D maxFricAccel = normForce;
-						maxFricAccel.scaleMag(fricCoeff);
-						maxFricAccel.scaleMag(1.0/rb.getMass());
-						
-						// A copy of the RBObject's initial velocity, updated by adding acceleration of 
-						// the RBObject to take into account any collisions the RBObject has had with 
-						// other RBObjects and any forces exerted by ForceFields before calculating the
-						// frictional force.
-						Vec2D rbVel = rb.velocity.copy();
-						rbVel.addVec(rb.accel);
-						
-						// If the component of the velocity the RBObject wants to have along the top or
-						// bottom of the tile is less than the maximum acceleration from a static 
-						// frictional force, then calculate a frictional force just large enough to keep
-						// the RBObject in place and return that.
-						if(rbVel.getXVec().getMag() < maxFricAccel.getMag())
-						{
-							// Calculate a frictional force just large enough to keep the RBObject in 
-							// place.
-							Vec2D friction = rbVel.getXVec().getInverse();
-							friction.scaleMag(rb.getMass());
-							
-							return friction; // Return that force. 
-						}
-					
-						// If the above condition was false, then the velocity the RBObject wants to have
-						// is too big and the maximum possible frictional force must be returned.
-					
-						// Calculate the maximum possible frictional force from the maximum possible 
-						// acceleration.
-						Vec2D friction = maxFricAccel;
-						friction.scaleMag(rb.getMass());
-						
-						// Point that force in the direction that opposes the motion of the RBObject.
-						if(rbVel.getXComp() < 0.0)
-							friction.changeDir(0.0);
-						else
-						{
-							if(Vec2D.useRadians)
-								friction.changeDir(Math.PI);
-							else
-								friction.changeDir(180.0);
-						}
-						
-						return friction; // Return the maximum static frictional force. 
-					}
-				}
-			
-				// The code below is the same as the above code for calculating either a kinetic or 
-				// static frictional force, except modified to work in the case that
-				// the RBObject is making contact with the right or left side of the tile. 
-				else
-				{
-					Vec2D normForce = rb.accel.getXVec();
-					normForce.scaleMag(rb.getMass());
-					
-					if((side == RIGHT && normForce.getXComp() > 0.0))
-						return new Vec2D(0.0, 0.0);
-					if((side == LEFT && normForce.getXComp() < 0.0))
-						return new Vec2D(0.0, 0.0);
-					
-					if(moving)
-					{
-						Vec2D friction = normForce;
-						friction.scaleMag(fricCoeff);
-						
-						Vec2D rbVel = rb.velocity.copy();
-						rbVel.addVec(rb.accel);
-						
-						if(rbVel.getYComp() < 0.0)
-						{
-							if(Vec2D.useRadians)
-								friction.changeDir(Math.PI/2.0);
-							else
-								friction.changeDir(90.0);
-						}
-						else
-						{
-							if(Vec2D.useRadians)
-								friction.changeDir(1.5*Math.PI);
-							else
-								friction.changeDir(270.0);
-						}
-						
-						Vec2D fricAccel = friction.copy();
-						fricAccel.scaleMag(1.0/rb.getMass());
-						
-						if(Math.abs(rbVel.getYComp()) < Math.abs(fricAccel.getYComp()))
-						{
-							Vec2D stopFric = rbVel.getYVec().getInverse();
-							stopFric.scaleMag(rb.getMass());
-							
-							return stopFric;
-						}
-						
-						return friction;
-					}
-					else
-					{
-						Vec2D maxFricAccel = normForce;
-						maxFricAccel.scaleMag(fricCoeff);
-						maxFricAccel.scaleMag(1.0/rb.getMass());
-						
-						Vec2D rbVel = rb.velocity.copy();
-						rbVel.addVec(rb.accel);
-						
-						if(rbVel.getYVec().getMag() < maxFricAccel.getMag())
-						{
-							Vec2D friction = rbVel.getYVec().getInverse();
-							friction.scaleMag(rb.getMass());
-							
-							return friction;
-						}
-					
-						Vec2D friction = maxFricAccel;
-						friction.scaleMag(rb.getMass());
-						
-						if(rbVel.getYComp() < 0.0)
-						{
-							if(Vec2D.useRadians)
-								friction.changeDir(Math.PI/2.0);
-							else
-								friction.changeDir(90.0);
-						}
-						else
-						{
-							if(Vec2D.useRadians)
-								friction.changeDir(1.5*Math.PI);
-							else
-								friction.changeDir(270.0);
-						}
-						
-						return friction;
-					}
-				}
-			}
+		
 			
 			// How to calculate the frictional force when the Surface is in the background.
-			else
+			if(background)
 			{
-				// This time, instead of using the normal force against the tile associated with the
-				// Surface, use the magnitude of the weight force (mass * g). (Note: This is only 
-				// realistic if the tile represents the floor.)
+				onContact(rb, tx, ty, txsize, tysize); // Perform actions upon continually making contact
+				   // with the tile.
+
+				// The magnitude of the frictional force exerted on an object is calculated by 
+				// multiplying the coefficient of friction by the normal force an object is exerting on
+				// the surface it's making contact with. 
+
+				double fricCoeff; // Will hold the coefficient of friction.
+				boolean moving; // A different frictional force is exerted depending on whether the
+				// object is moving (kinetic) or still (static). This will be used to 
+				// tell whether the RBObject is moving or not. 
+
+				// If the RBObject hasn't moved from its position last frame, then use static friction.
+				if(rb.x == rb.getLastX() && rb.y == rb.getLastY())
+				{
+					fricCoeff = rb.getCoeff()*coeffS; // Calculate the coefficient of friction using
+													  // the RBObject's partial coefficient and the
+			   	  									  // Surface's static partial coefficient.
+
+					moving = false; // Record that the RBObject is stationary. 
+				}
+
+				// If the RBObject is moving, then use kinetic friction.
+				else
+				{
+					fricCoeff = rb.getCoeff()*coeffK; // Calculate the coefficient of friction using
+													  // the RBObject's partial coefficient and the
+			  	  									  // Surface's kinetic partial coefficient.
+
+					moving = true; // Record that the RBObject is moving. 
+				}
+				
+				// Use the magnitude of the weight force (mass * g) as a normal force. 
+				// (Note: This is only realistic if the tile represents the floor.)
 				double weight = rb.getMass()*Gravity.get_g().getMag();
 				
 				// Finding either the kinetic friction or the static friction in this case is very
@@ -722,7 +483,8 @@ public class Surface
 					return friction;
 				}
 			}
-		}
+			else // Return a zero force if tile is not in the background.
+				return new Vec2D(0.0, 0.0);
 	}
 	
 	// This is a reserved method for creating a class which extends Surface. Override this method to
