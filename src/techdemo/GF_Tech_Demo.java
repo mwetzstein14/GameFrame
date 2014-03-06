@@ -115,7 +115,8 @@ public class GF_Tech_Demo extends GameFrame {
 	@Override
 	public void paintFrame()
 	{
-		drawImage(getMouseX() - 8.0, getMouseY() - 8.0, "crosshairs");
+		if(getMouseY() > 16)
+			drawImage(getMouseX() - 8.0, getMouseY() - 8.0, "crosshairs");
 		
 		drawString("Mass: " + (float)player.getBallMass(), 8.0, 4.0, -1);
 		drawString("Charge: " + (float)player.getBallCharge(), 72.0, 4.0, -1);

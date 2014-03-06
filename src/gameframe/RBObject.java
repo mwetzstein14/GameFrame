@@ -97,6 +97,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+		
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -123,6 +126,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+		
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -151,6 +157,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -179,6 +188,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -205,6 +217,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -233,6 +248,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -261,6 +279,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -290,6 +311,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 
@@ -318,6 +342,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 	
 	// Below are the same constructors again, except modified this time to also set the initial
@@ -347,6 +374,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -374,6 +404,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -403,6 +436,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -432,6 +468,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -459,6 +498,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -487,6 +529,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -516,6 +561,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -546,6 +594,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 	
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -574,6 +625,9 @@ public class RBObject extends JGObject
 		bypassField = false;
 		bypassTile = false;
 		canMove = true;
+
+		xdir = 1;
+		ydir = 1;
 	}
 	
 	// Below are the same constructors again, except this time modified to set initial settings
@@ -604,6 +658,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -631,6 +688,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -660,6 +720,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -689,6 +752,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -716,6 +782,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -744,6 +813,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -773,6 +845,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -803,6 +878,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 
@@ -832,6 +910,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 	
 	// Below are the same constructors again, except modified this time to set the initial
@@ -862,6 +943,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -890,6 +974,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -920,6 +1007,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -950,6 +1040,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -978,6 +1071,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -1007,6 +1103,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -1037,6 +1136,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -1068,6 +1170,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 	
 	public RBObject(String name, boolean unique_id, double x, double y,
@@ -1097,6 +1202,9 @@ public class RBObject extends JGObject
 		bypassField = byField;
 		bypassTile = byTile;
 		canMove = move;
+
+		xdir = 1;
+		ydir = 1;
 	}
 	
 	// Returns the number of RBObjects currently in game. 
@@ -1319,12 +1427,12 @@ public class RBObject extends JGObject
 				// If a surface that should be used is found:
 				if(surface.checkTileID(tilecid, this))
 				{	
-					// Add the force that should result from the RBObject sliding against the tile 
-					// using the surface.
-					addForce(surface.slide(this, tilecid, tx, ty, txsize, tysize));
 					// Add the impulse that should result from the RBObject colliding with the 
 					// tile using the surface.
 					addImpulse(surface.hit(this, tilecid, tx, ty, txsize, tysize));
+					// Add the force that should result from the RBObject sliding against the tile 
+					// using the surface.
+					addForce(surface.slide(this, tilecid, tx, ty, txsize, tysize));
 					
 					lastSurfaces = tilecid; // Set lastSurfaces equal to the OR of the tiles collided
 											// with this frame. 
@@ -1399,11 +1507,6 @@ public class RBObject extends JGObject
 				
 				xspeed = velocity.getXComp();
 				yspeed = velocity.getYComp();
-				
-				// The fact that I need to add these next two lines of code is strange because the JGame engine
-				// claims to do this for me.
-				x += xspeed;
-				y += yspeed;
 			}
 		
 			accel = new Vec2D(0.0, 0.0); // Reset the acceleration vector to zero so that it does not

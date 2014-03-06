@@ -15,12 +15,14 @@ public class Launcher extends Actor
 	private int select = MASS;
 	
 	// Sight for aiming balls.
+	@SuppressWarnings("unused")
 	private Aim sight;
 	
 	public Launcher ()
 	{
 		super("launcher", false, 32.0, 32.0, 1, "player", new Vec2D(0.0, 0.0), expire_never, 
 				GF_Tech_Demo.getCurrFrame(), false, true, true, true, false, true, null, 1.5);
+		
 		sight = new Aim(this);
 	}
 	
@@ -41,11 +43,14 @@ public class Launcher extends Actor
 	
 	private void launchBall()
 	{
-		Vec2D launchVel = new Vec2D(new Coord(x + 7.0, y + 7.0), 
+		if(GF_Tech_Demo.mouseY > 16)
+		{
+			Vec2D launchVel = new Vec2D(new Coord(x + 7.0, y + 7.0), 
 					new Coord(GF_Tech_Demo.mouseX, GF_Tech_Demo.mouseY));
-		launchVel.changeMag(ballSpeed);
+			launchVel.changeMag(ballSpeed);
 		
-		new Ball(x + 2.0, y + 2.0, launchVel, ballMass, ballCharge);
+			new Ball(x + 2.0, y + 2.0, launchVel, ballMass, ballCharge);
+		}
 	}
 	
 	private void setBall()
@@ -59,22 +64,22 @@ public class Launcher extends Actor
 		
 		if(GF_Tech_Demo.checkButton(GF_Tech_Demo.KeyUp, GF_Tech_Demo.HOLD))
 		{
-			if(select == MASS && ballMass + 0.01 <= 10)
-				ballMass += 0.01;
-			if(select == CHARGE && ballCharge + 0.01 <= 10)
-				ballCharge += 0.01;
-			if(select == SPEED && ballMass + 0.01 <= 4)
-				ballSpeed += 0.01;
+			if(select == MASS && ballMass + 0.05 <= 10)
+				ballMass += 0.05;
+			if(select == CHARGE && ballCharge + 0.05 <= 10)
+				ballCharge += 0.05;
+			if(select == SPEED && ballMass + 0.05 <= 4)
+				ballSpeed += 0.05;
 		}
 		
 		if(GF_Tech_Demo.checkButton(GF_Tech_Demo.KeyDown, GF_Tech_Demo.HOLD))
 		{
-			if(select == MASS && ballMass - 0.01 >= 0)
-				ballMass -= 0.01;
-			if(select == CHARGE && ballCharge - 0.01 >= -10)
-				ballCharge -= 0.01;
-			if(select == SPEED && ballSpeed - 0.01 >= 0)
-				ballSpeed -= 0.01;
+			if(select == MASS && ballMass - 0.05 >= 0)
+				ballMass -= 0.05;
+			if(select == CHARGE && ballCharge - 0.05 >= -10)
+				ballCharge -= 0.05;
+			if(select == SPEED && ballSpeed - 0.05 >= 0)
+				ballSpeed -= 0.05;
 		}
 	}
 	
