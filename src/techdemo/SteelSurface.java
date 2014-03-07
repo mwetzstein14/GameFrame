@@ -7,7 +7,7 @@ public class SteelSurface extends Surface
 {
 	public SteelSurface(int[] cids)
 	{
-		super(cids, 0.5, 0.5, 0.7, false);
+		super(cids, 0.5, 0.5, 0.9, false);
 	}
 	
 	@Override
@@ -17,7 +17,7 @@ public class SteelSurface extends Surface
 		{
 			int side = findSide(rb, tx, ty, txsize, tysize);
 			JGRectangle rbSize = rb.getBBox();
-			int angleAdjust = (int)Math.random()*180;
+			int angleAdjust = (int)(Math.random()*180);
 		
 			if(side == TOP)
 			{

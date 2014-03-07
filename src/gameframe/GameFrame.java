@@ -101,7 +101,8 @@ public abstract class GameFrame extends JGEngine
 	// overridden to make doFrame() call ManagerList methods that target ActorManagers with specific
 	// string IDs. You can also override this method in order to call routine methods for Actors 
 	// which are not managed by an ActorManager or do any other management necessary for such Actor
-	// objects.
+	// objects. You may also need to override this method if you need to make calls to ManagerList to
+	// edit the spawn mode or spawn instructions of any ActorManagers. 
 	public void manageObjects()
 	{
 		ManagerList.destroyAll();

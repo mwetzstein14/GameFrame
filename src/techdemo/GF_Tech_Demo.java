@@ -8,11 +8,14 @@ public class GF_Tech_Demo extends GameFrame {
 	public static double mouseX = 0;
 	public static double mouseY = 0;
 	
-	public int score = 0;
+	public static int score = 0;
 	
 	SteelSurface steelV;
 	SteelSurface steelH;
 	RailingSurface railing;
+	
+	DiamondManager dManager;
+	
 	Launcher player;
 
 	public static void main(String[] args) 
@@ -50,7 +53,7 @@ public class GF_Tech_Demo extends GameFrame {
 		setTiles(0, 1, 
 				new String[] { 
 				"HHHHHHHHHHHHHHHHHHHH",
-				"V.R................V",
+				"V.R...............DV",
 				"V.R................V",
 				"V.R....V...........V",
 				"V.R....V...........V",
@@ -61,7 +64,7 @@ public class GF_Tech_Demo extends GameFrame {
 				"V.R................V",
 				"V.R.......HHH......V",
 				"V.R................V",
-				"V.R................V",
+				"V.R...............MV",
 				"HHHHHHHHHHHHHHHHHHHH" } );
 		
 		int[] nonCharKeys = new int[] {KeyUp, KeyDown, KeyRight, KeyShift, KeyLeft, KeyMouse1, KeyEsc};
@@ -69,7 +72,7 @@ public class GF_Tech_Demo extends GameFrame {
 		
 		trackThese(nonCharKeys, charKeys);
 		
-		setCursor(null);
+		setMouseCursor(NO_CURSOR);
 		
 		Vec2D.useRadians = false;
 		
@@ -78,10 +81,14 @@ public class GF_Tech_Demo extends GameFrame {
 		
 		Particle.maxParticles = 100;
 		Projectile.maxProjectiles = 30;
+		Actor.maxActors = 20;
 		
 		steelV = new SteelSurface(new int[] {1});
 		steelH = new SteelSurface(new int[] {2});
 		railing = new RailingSurface(new int[] {4});
+		
+		dManager = new DiamondManager("diamond", 4, 450, new JGPoint(288, 33));
+		ManagerList.add(dManager);
 		
 		player = new Launcher();
 	}
@@ -101,6 +108,9 @@ public class GF_Tech_Demo extends GameFrame {
 	public void collideObjects()
 	{
 		checkCollision(8, 8);
+		checkCollision(16, 16);
+		checkCollision(8, 16);
+		checkCollision(16, 8);
 	}
 	
 	@Override
@@ -110,6 +120,7 @@ public class GF_Tech_Demo extends GameFrame {
 		checkBGCollision(1+2+4, 2);
 		checkBGCollision(1+2+4, 4);
 		checkBGCollision(1+2+4, 8);
+		checkBGCollision(1+2+4, 16);
 	}
 	
 	@Override

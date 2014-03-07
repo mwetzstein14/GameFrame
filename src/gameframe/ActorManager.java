@@ -18,8 +18,8 @@ import java.util.ArrayList;
  * Actors that are no longer in game to the garbage collector. For this reason, it is not wise to 
  * extend a class from a class extending ActorManager unless you are comfortable running all the code
  * in the superclass's destroy() method in your overridden version, as calling super.destroy() is the 
- * only way to make sure your ActorManager doesn't hold onto memory and run methods for objects which
- * are no longer in game. 
+ * preferred way to make sure your ActorManager doesn't hold onto memory and run methods for objects 
+ * which are no longer in game. 
  */
 
 public abstract class ActorManager 
@@ -71,7 +71,7 @@ public abstract class ActorManager
 	}
 	
 	// Method which removes all Actors in list from the game and from list without calling their
-	// destruction methods (destruction() may also invoke animations or spawn new objects, which may
+	// destruction methods (destruction() may also spawn new objects or trigger events, which may
 	// be undesirable if one is simply trying to reset the ActorManager or remove it from ManagerList).
 	public void removeAll()
 	{

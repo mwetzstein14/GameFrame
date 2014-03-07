@@ -20,12 +20,16 @@ fade_anim1		-	0	fade_ball_sheet		0	-
 fade_anim2		-	0	fade_ball_sheet		1	-
 fade_anim3		-	0	fade_ball_sheet		2	-
 
-fade_ball		fade_anim1;fade_anim2;fade_anim3	50
+fade_ball		fade_anim1;fade_anim2;fade_anim3	0.4		true
 
 // Images used for enemies (diamond shaped flyers):
 
 diamond			-	0	Enemy.gif			-
 diamond_dead	-	0	Enemy_Husk.gif		-
+
+// Image used for floating magnet objects:
+
+magnet		-	0	Magnet.gif		-
 
 // Images used for environment tiles:
 
@@ -33,6 +37,11 @@ steel_vert		V	1	Wall.gif	-
 steel_hor		H	2	Wall.gif	-
 rail			R	4	Rail.gif	-
 empty			.	0	null		-
+
+// Images used for tiles where Actors spawn:
+
+magnet_spawner		M	0	MSpawn.gif	-
+diamond_spawner		D	0	DSpawn.gif	-
 
 // Images used for explosion along with explosion animation:
 
