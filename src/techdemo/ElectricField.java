@@ -1,11 +1,16 @@
 package techdemo;
 
-import gameframe.ForceField;
-import gameframe.RBObject;
-import gameframe.Vec2D;
+import gameframe.*;
 
 public class ElectricField extends ForceField 
 {
+	private Actor source;
+	
+	public ElectricField(Actor sourceActor) 
+	{
+		super(ForceField.list.size());
+		source = sourceActor;
+	}
 
 	@Override
 	protected void onEnter(RBObject rb) 
@@ -22,13 +27,30 @@ public class ElectricField extends ForceField
 	@Override
 	public boolean inField(RBObject rb) 
 	{
-		return false;
+		double distance = 
+				Math.sqrt(Math.pow((rb.x+rb.getBBox().width/2.0) - (source.x+source.getBBox().width/2.0), 2.0) 
+						+ Math.pow((rb.y+rb.getBBox().width/2.0) - (source.y+source.getBBox().width/2.0), 2.0));
+		
+		if(distance < 20.0)
+			return true;
+		else
+			return false;
 	}
 
 	@Override
 	protected Vec2D calcForce(RBObject rb) 
 	{
-		return null;
+		double comboCharge = rb.getCharge()*source.getCharge();
+		
+		double distance = 
+				Math.sqrt(Math.pow((rb.x+rb.getBBox().width/2.0) - (source.x+source.getBBox().width/2.0), 2.0) 
+						+ Math.pow((rb.y+rb.getBBox().width/2.0) - (source.y+source.getBBox().width/2.0), 2.0));
+		
+		Vec2D force = new Vec2D(new Coord(rb.x+rb.getBBox().width/2.0, rb.y+rb.getBBox().width/2.0), 
+				new Coord(source.x+source.getBBox().width/2.0, source.y+source.getBBox().width/2.0));
+		force.changeMag(-1.0*comboCharge/Math.pow(distance, 2.0));
+		
+		return force;
 	}
 
 }

@@ -66,7 +66,9 @@ public abstract class ActorManager
 		for(int i = list.size()-1; i >= 0; i--)
 		{
 			if(list.get(i).isAlive() == false)
+			{
 				list.remove(i);
+			}
 		}
 	}
 	

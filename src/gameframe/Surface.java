@@ -119,6 +119,9 @@ public class Surface
 		JGPoint[][] tiles = new JGPoint[txsize][tysize]; // Array that will contain the indicies of 
 														 // all the tiles that the RBObject is 
 														 // overlapping. 
+		ArrayList<JGPoint> choices = new ArrayList<JGPoint>(); // Will hold all the coordinates of 
+															   // the tiles that ended up being 
+															   // associated with this Surface.
 		JGPoint tileHit = new JGPoint(0, 0); // This will contain the coordinate of the top left 
 											 // corner of the tile that this RBObject collided with
 											 // to trigger this Surface.
@@ -148,12 +151,13 @@ public class Surface
 					if(rb.eng.getTileCid(tiles[i][j].x, tiles[i][j].y) == tileIDs[k])
 					{
 						// Get the coordinate of the top left of that tile and set tileHit equal to it.
-						tileHit = rb.eng.getTileCoord(tiles[i][j]);
-						break;
+						choices.add(rb.eng.getTileCoord(tiles[i][j]));
 					}
 				}
 			}
 		}
+		
+		tileHit = choices.get(0);
 		
 		// It's easy to boil the choice of which side the RBObject is colliding with the tile down to
 		// two choices depending on the relative positions of the two. These variables keep track of
@@ -285,6 +289,13 @@ public class Surface
 			// Determine what side of the tile the RBObject is colliding with, necessary to find the
 			// direction of the resulting impulse.
 			int side = findSide(rb, tx, ty, txsize, tysize);
+			
+			// Next push RBObject so that it is no longer overlapping with the tile.
+			if(rb.getLastX() != 0.0 && rb.getLastY() != 0.0)
+			{
+				rb.x = rb.getLastX();
+				rb.y = rb.getLastY();
+			}
 		
 			double e = elastic*rb.getElastic(); // The elasticity of the collision with the tile. 
 		
@@ -304,11 +315,7 @@ public class Surface
 			// bounces off of the side of the tile at an angle.
 		
 			if(side == TOP) // If it struck the top side of the tile.
-			{
-				// First push RBObject so that it is no longer overlapping with the tile.
-				rb.x = rb.getLastX();
-				rb.y = rb.getLastY();
-				
+			{	
 				if(rbVel_i.getYComp() <= 0.0)   // If the RBObject is already moving away from the tile,
 					return new Vec2D(0.0, 0.0); // then the collision already happened and an impulse of
 												// zero should be returned.
@@ -322,10 +329,6 @@ public class Surface
 			// side of the tile. 
 			if(side == RIGHT)
 			{
-				// First push RBObject so that it is no longer overlapping with the tile.
-				rb.x = rb.getLastX();
-				rb.y = rb.getLastY();
-				
 				if(rbVel_i.getXComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
@@ -336,10 +339,6 @@ public class Surface
 			// side of the tile. 
 			if(side == LEFT)
 			{
-				// First push RBObject so that it is no longer overlapping with the tile.
-				rb.x = rb.getLastX();
-				rb.y = rb.getLastY();
-				
 				if(rbVel_i.getXComp() <= 0.0)
 					return new Vec2D(0.0, 0.0);
 				
@@ -350,10 +349,6 @@ public class Surface
 			// side of the tile. 
 			if(side == BOTTOM)
 			{
-				// First push RBObject so that it is no longer overlapping with the tile.
-				rb.x = rb.getLastX();
-				rb.y = rb.getLastY();
-				
 				if(rbVel_i.getYComp() >= 0.0)
 					return new Vec2D(0.0, 0.0);
 				

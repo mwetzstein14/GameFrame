@@ -15,6 +15,7 @@ public class GF_Tech_Demo extends GameFrame {
 	RailingSurface railing;
 	
 	DiamondManager dManager;
+	ElectrodeManager eManager;
 	
 	Launcher player;
 
@@ -89,6 +90,8 @@ public class GF_Tech_Demo extends GameFrame {
 		
 		dManager = new DiamondManager("diamond", 4, 450, new JGPoint(288, 33));
 		ManagerList.add(dManager);
+		eManager = new ElectrodeManager("electrode", 3, 1800, new JGPoint(288, 66));
+		ManagerList.add(eManager);
 		
 		player = new Launcher();
 	}
@@ -109,8 +112,13 @@ public class GF_Tech_Demo extends GameFrame {
 	{
 		checkCollision(8, 8);
 		checkCollision(16, 16);
+		checkCollision(32, 32);
 		checkCollision(8, 16);
 		checkCollision(16, 8);
+		checkCollision(32, 8);
+		checkCollision(8, 32);
+		checkCollision(32, 16);
+		checkCollision(16, 32);
 	}
 	
 	@Override
@@ -121,6 +129,7 @@ public class GF_Tech_Demo extends GameFrame {
 		checkBGCollision(1+2+4, 4);
 		checkBGCollision(1+2+4, 8);
 		checkBGCollision(1+2+4, 16);
+		checkBGCollision(1+2+4, 32);
 	}
 	
 	@Override

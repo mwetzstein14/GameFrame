@@ -26,6 +26,12 @@ public class RBObject extends JGObject
 									 // collisions to update velocity. This variable is used to track
 	                                 // when move is being called, before or after collisions.
 	
+	private boolean bounceHit = false; // When RBObject collide with one another, they must move back
+									   // to their position the previous frame so that they do not
+									   // overlap other RBObjects. This variable is used in 	
+									   // whether or not an RBObject will move back to its previous
+									   // position due to a collision.
+	
 	public static int maxRB; // Maximum number of RBObjects that may be created in game. 
 							 // Check if rbCount is below this before creating RBObjects.
 	protected static int rbCount; // The current number of RBObjects in game. 
@@ -1335,6 +1341,8 @@ public class RBObject extends JGObject
 		// how this determines the change in velocity or what some of the terms I will be mentioning
 		// in the comments mean. Just trust me though that this is sort of how it works.
 		
+		bounceHit = true; // In move method, return RBObject to its position just before the collision.
+		
 		double e = elastic * rbArg.getElastic(); // Use the partial elasticity of both colliding
 												 // RBObjects to determine the elasticity of the 
 												 // collision (e).
@@ -1500,6 +1508,16 @@ public class RBObject extends JGObject
 		// x and y components of velocity.
 		if(!beforeCollisions)
 		{
+			// If the RBObject was involved in a collision, move it back to its position just
+			// before the collision.
+			if(bounceHit == true && (getLastX() != 0.0 && getLastY() != 0.0))
+			{
+				x = getLastX();
+				y = getLastY();
+				
+				bounceHit = false; // Reset bounceHit.
+			}
+			
 			// Only update the velocity of the RBObject if its setting currently permit it to move.
 			if(canMove) 
 			{	

@@ -13,12 +13,14 @@ public class DiamondManager extends ActorManager
 	@Override
 	public void spawn() 
 	{
-		if(elapsed()%spawnInstruct[0] == 0 && list.size() < maxPop 
-				&& Actor.getCount() < Actor.maxActors)
+		if(spawnMode == SET_INTERVAL)
 		{
-			Vec2D randVel = new Vec2D(180.0 - Math.random()*90.0, 1.0);
-			list.add(new Diamond(spawnInstruct[1], spawnInstruct[2], randVel, this));
+			if(elapsed()%spawnInstruct[0] == 0 && list.size() < maxPop 
+				&& Actor.getCount() < Actor.maxActors)
+			{
+				Vec2D randVel = new Vec2D(180.0 - Math.random()*90.0, 1.0);
+				list.add(new Diamond(spawnInstruct[1], spawnInstruct[2], randVel, this));
+			}
 		}
 	}
-
 }
