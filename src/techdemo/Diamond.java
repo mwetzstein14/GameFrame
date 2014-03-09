@@ -28,11 +28,12 @@ public class Diamond extends Actor
 	@Override
 	public void setState(int newState)
 	{
-		if(newState == 1)
+		if(newState == 1 && getState() != 1)
 		{
 			setImage("diamond_dead");
 			gravitate = true;
 			mass = 3.0;
+			new Explosion(x, y);
 		}
 		
 		super.setState(newState);

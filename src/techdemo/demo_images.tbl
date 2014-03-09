@@ -55,7 +55,7 @@ boom5	-	0	explosion_sheet		4	-
 boom6	-	0	explosion_sheet		5	-
 boom7	-	0	explosion_sheet		6	-
 
-explosion		boom1;boom2;boom3;boom4;boom5;boom6;boom7	0.2	
+explosion		boom1;boom2;boom3;boom4;boom5;boom6;boom7	0.4	
 
 // A debris image, used for particles that appear when walls are hit or things break apart:
 
