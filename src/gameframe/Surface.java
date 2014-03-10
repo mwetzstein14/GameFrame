@@ -114,7 +114,15 @@ public class Surface
 	@SuppressWarnings("unused")
 	protected int findSide(RBObject rb, int tx, int ty, int txsize, int tysize)
 	{
-		// This code assumes that the origin is in the top left of the screen.  
+		// This code assumes that the origin is in the top left of the screen. It should also be noted that 
+		// this algorithm does not work well when objects are moving very fast (with 16X16 tiles, things start to 
+		// get glitchy with speeds greater than 7.0, and the algorithim's reliability breaks down almost 
+		// completely with speeds greater than 9.0). The reason that this algorithm doesn't work for objects at 
+		// high speeds is because the object has too great a change in position between frames. The object, if 
+		// moving fast enough, can either move from being outside the tile to being inside the tile or even on 
+		// the other side of it from one frame to the next. The best way to increase the accuracy of this 
+		// algorithm is to have bigger tiles, so that objects are not as likely to phase too far into them or 
+		// onto the other side. 
 		
 		JGPoint[][] tiles = new JGPoint[txsize][tysize]; // Array that will contain the indicies of 
 														 // all the tiles that the RBObject is 
@@ -122,11 +130,9 @@ public class Surface
 		ArrayList<JGPoint> choices = new ArrayList<JGPoint>(); // Will hold all the coordinates of 
 															   // the tiles that ended up being 
 															   // associated with this Surface.
-		JGPoint tileHit = new JGPoint(0, 0); // This will contain the coordinate of the top left 
-											 // corner of the tile that this RBObject collided with
-											 // to trigger this Surface.
 		
-		// The following process determines the coordinate that will be stored in tileHit.
+		// The following process determines the coordinates of the indicies of the tiles that the RBObject 
+		// might be colliding with.
 		
 		// First, find all the indicies of the tiles that the RBObject is currently overlapping
 		// using  the top left tile's indicies passed through tx and ty and the number of tiles 
@@ -150,112 +156,161 @@ public class Surface
 					// If it's a match...
 					if(rb.eng.getTileCid(tiles[i][j].x, tiles[i][j].y) == tileIDs[k])
 					{
-						// Get the coordinate of the top left of that tile and set tileHit equal to it.
+						// Get the coordinate of the top left of that tile and add it to the possible choices.
 						choices.add(rb.eng.getTileCoord(tiles[i][j]));
 					}
 				}
 			}
 		}
 		
-		tileHit = choices.get(0);
+		// Next, for each possible choice of tile to collide with, we will record the area of the intersection
+		// between the RBObject's bounding box and the tile and the side of the tile that the RBObject would
+		// be colliding with. 
 		
-		// It's easy to boil the choice of which side the RBObject is colliding with the tile down to
-		// two choices depending on the relative positions of the two. These variables keep track of
-		// which two choices are the possible correct choices.
+		ArrayList<Double> intersectArea = new ArrayList<Double>(choices.size()); // Will hold areas of intersection.
+		ArrayList<Integer> choiceSide = new ArrayList<Integer>(choices.size()); // Will hold side of tiles
+																				// collided with. 
 		
-		boolean t_left = false; // Is either colliding with top or left side.
-		boolean t_right = false; // Is either colliding with top or right side.
-		boolean b_left = false; // Is either colliding with bottom or left side.
-		boolean b_right = false; // Is either colliding with bottom or right side. 
-		
-		// Find which combination of sides is possible:
-		if(rb.y < (double)tileHit.y && rb.x < (double)tileHit.x) // If RBObject is above to the left.
-			t_left = true;
-		else if(rb.y < (double)tileHit.y && rb.x >= (double)tileHit.x) // If RBObject is above to the right. 
-			t_right = true;
-		else if(rb.y >= (double)tileHit.y && rb.x < (double)tileHit.x) // If RBObject is below to the left.
-			b_left = true;
-		else // If no other cases were true, then RBObject must be below to the right. 
-			b_right = true;
-		
-		// After boiling down to two choices, one of them must be picked. To figure out which side
-		// the RBObject is really colliding with, I take advantage of the fact that in a collision 
-		// there is an overlap between the bounding boxes of the tile and the RBObject. By seeing 
-		// which is longer, the height or width, of the overlap between the two bounding boxes, I can
-		// determine which of the two possible choices is correct.
-		
-		// Get the default bounding box of the RBObject with the same dimensions as its sprite.
-		JGRectangle rbDimensions = rb.getBBox();
-		
-		// These coordinates will hold one of the top and one of the bottom corners of the rectangle
-		// that is the intersection between the bounding box of the RBObject and of the tile. 
-		Coord topIntersect;
-		Coord bottomIntersect;
-		
-		if(t_left) // If the two possible choices were top and left:
+		for(JGPoint choice : choices)
 		{
-			// Find coordinates of a top and a bottom corner of bounding box intersection.
-			topIntersect = new Coord((double)tileHit.x, (double)tileHit.y);
-			bottomIntersect = new Coord(rb.x + (double)rbDimensions.width, 
-					rb.y + (double)rbDimensions.height);
+		
+			// It's easy to boil the choice of which side the RBObject is colliding with the tile down to
+			// two choices depending on the relative positions of the two. These variables keep track of
+			// which two choices are the possible correct choices.
+		
+			boolean t_left = false; // Is either colliding with top or left side.
+			boolean t_right = false; // Is either colliding with top or right side.
+			boolean b_left = false; // Is either colliding with bottom or left side.
+			boolean b_right = false; // Is either colliding with bottom or right side. 
 			
-			// Calculate the height and width of the intersection.
-			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
-			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
+			// The following procedure looks at where the RBObject was last frame instead of where it is now in case
+			// the RBObject had moved too far through the tile for accurate collision detection.
 			
-			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-				return LEFT;         // left. Return LEFT.
-			else // Otherwise it's above. Return TOP.
-				return TOP;
-		}
-		else if(t_right) // If the two possible choices were top and right:
-		{
-			// Find coordinates of a top and a bottom corner of bounding box intersection.
-			topIntersect = new Coord((double)tileHit.x + (double)(JGObject.tilewidth-1), 
-					(double)tileHit.y);
-			bottomIntersect = new Coord(rb.x, rb.y + (double)rbDimensions.height);
+			// Find which combination of sides is possible:
+			if(rb.getLastY() < (double)choice.y && rb.getLastX() < (double)choice.x) // If RBObject is above to the left.
+				t_left = true;
+			else if(rb.getLastY() < (double)choice.y && rb.getLastX() >= (double)choice.x) // If RBObject is above to the right. 
+				t_right = true;
+			else if(rb.getLastY() >= (double)choice.y && rb.getLastX() < (double)choice.x) // If RBObject is below to the left.
+				b_left = true;
+			else // If no other cases were true, then RBObject must be below to the right. 
+				b_right = true;
 			
-			// Calculate the height and width of the intersection.
-			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
-			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
+			// After boiling down to two choices, one of them must be picked. To figure out which side
+			// the RBObject is really colliding with, I take advantage of the fact that in a collision 
+			// there is an overlap between the bounding boxes of the tile and the RBObject. By seeing 
+			// which is longer, the height or width, of the overlap between the two bounding boxes, I can
+			// determine which of the two possible choices is correct. 
+			// Like the operation above however, the accuracy of this kind of calculation is not reliable if the
+			// RBObject is moving too fast (it might have moved too far into the tile). Instead of calculating
+			// the actual area of intersection, we will calculate a pseudo area using the same method that we 
+			// would use to find the real one, but subbing in the coordinates of the RBObject the last frame 
+			// instead of this frame. This will find an area that is really the space between the tile and the
+			// RBObject before they collided, but analyzing this area will be more accurate than analyzing the
+			// real area. I will refer to this pseudo area as the area of intersection from now on to simplify 
+			// things. 
+			
+			// Get the default bounding box of the RBObject with the same dimensions as its sprite.
+			JGRectangle rbDimensions = rb.getBBox();
+			
+			// These coordinates will hold one of the top and one of the bottom corners of the rectangle
+			// that is the intersection between the bounding box of the RBObject and of the tile. 
+			Coord topIntersect;
+			Coord bottomIntersect;
+			
+			if(t_left) // If the two possible choices were top and left:
+			{
+				// Find coordinates of a top and a bottom corner of bounding box intersection.
+				topIntersect = new Coord((double)choice.x, (double)choice.y);
+				bottomIntersect = new Coord(rb.getLastX() + (double)rbDimensions.width, 
+					rb.getLastY() + (double)rbDimensions.height);
+				
+				// Calculate the height and width of the intersection.
+				double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
+				double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
+				
+				intersectArea.add(intHeight*intWidth);
+				
+				if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+					choiceSide.add(LEFT);         // left. Return LEFT.
+				else // Otherwise it's above. Return TOP.
+					choiceSide.add(TOP);
+			}
+			else if(t_right) // If the two possible choices were top and right:
+			{
+				// Find coordinates of a top and a bottom corner of bounding box intersection.
+				topIntersect = new Coord((double)choice.x + (double)(JGObject.tilewidth-1), 
+					(double)choice.y);
+				bottomIntersect = new Coord(rb.getLastX(), rb.getLastY() + (double)rbDimensions.height);
+				
+				// Calculate the height and width of the intersection.
+				double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
+				double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
+				
+				intersectArea.add(intHeight*intWidth);
 
-			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-				return RIGHT;		 // right. Return RIGHT.
-			else // Otherwise it's above. Return TOP.
-				return TOP;
+				if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+					choiceSide.add(RIGHT);		 // right. Return RIGHT.
+				else // Otherwise it's above. Return TOP.
+					choiceSide.add(TOP);
+			}
+			else if(b_left) // If the two possible choices were bottom and left:
+			{
+				// Find coordinates of a top and a bottom corner of bounding box intersection.
+				topIntersect = new Coord(rb.getLastX() + (double)rbDimensions.width, rb.getLastY());
+				bottomIntersect = new Coord((double)choice.x, 
+					(double)choice.y + (double)(JGObject.tileheight-1));
+			
+				// Calculate the height and width of the intersection.
+				double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
+				double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
+				
+				intersectArea.add(intHeight*intWidth);
+				
+				if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+					choiceSide.add(LEFT);         // left. Return LEFT.
+				else // Otherwise it's below. Return BOTTOM.
+					choiceSide.add(BOTTOM);
+			}
+			else // If the two possible choices were bottom and right:
+			{
+				// Find coordinates of a top and a bottom corner of bounding box intersection.
+				topIntersect = new Coord(rb.getLastX(), rb.getLastY());
+				bottomIntersect = new Coord((double)choice.x + (double)(JGObject.tilewidth-1),
+					(double)choice.y + (double)(JGObject.tileheight-1));
+				
+				// Calculate the height and width of the intersection.
+				double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
+				double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
+				
+				intersectArea.add(intHeight*intWidth);
+			
+				if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
+					choiceSide.add(RIGHT);        // right. Return RIGHT.
+				else // Otherwise it's below. Return BOTTOM.
+					choiceSide.add(BOTTOM);
+			}
 		}
-		else if(b_left) // If the two possible choices were bottom and left:
+		
+		// Lastly, to figure out which side of a tile the RBObject realistically collided with, we find the 
+		// choice which had the most area of intersection with the bounding box of the RBObject. 
+		
+		double biggestArea = 0; // Keeps track of the biggest area of intersection found
+		int index = 0; // Keeps track of the index of the value biggestArea in intersectArea. Index will 
+					   // correspond to the index of the side in choiceSide that was determined for the tile
+					   // that had the area of intersection biggestArea.
+		
+		for(double area : intersectArea)
 		{
-			// Find coordinates of a top and a bottom corner of bounding box intersection.
-			topIntersect = new Coord(rb.x + (double)rbDimensions.width, rb.y);
-			bottomIntersect = new Coord((double)tileHit.x, 
-					(double)tileHit.y + (double)(JGObject.tileheight-1));
-			
-			// Calculate the height and width of the intersection.
-			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
-			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
-			
-			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-				return LEFT;         // left. Return LEFT.
-			else // Otherwise it's below. Return BOTTOM.
-				return BOTTOM;
+			if(area > biggestArea) // If this area is bigger than the last biggest area found.
+			{
+				biggestArea = area; // This is the new biggest area.
+				index = intersectArea.indexOf(area); // Record its index. 
+			}
 		}
-		else // If the two possible choices were bottom and right:
-		{
-			// Find coordinates of a top and a bottom corner of bounding box intersection.
-			topIntersect = new Coord(rb.x, rb.y);
-			bottomIntersect = new Coord((double)tileHit.x + (double)(JGObject.tilewidth-1),
-					(double)tileHit.y + (double)(JGObject.tileheight-1));
-			
-			// Calculate the height and width of the intersection.
-			double intHeight = Math.abs(topIntersect.y - bottomIntersect.y);
-			double intWidth = Math.abs(topIntersect.x - bottomIntersect.x);
-			
-			if(intHeight > intWidth) // If the height is greater, then the RBObject must be to the
-				return RIGHT;        // right. Return RIGHT.
-			else // Otherwise it's below. Return BOTTOM.
-				return BOTTOM;
-		}
+		
+		return choiceSide.get(index); // Return the side that the RBObject collided with of the tile which it
+									  // had the most intersection with. 
 	}
 	
 	// Returns true if this is the first frame the RBObject has made contact with a tile associated
