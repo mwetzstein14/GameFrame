@@ -31,7 +31,7 @@ public class ElectricField extends ForceField
 				Math.sqrt(Math.pow((rb.x+rb.getBBox().width/2.0) - (source.x+source.getBBox().width/2.0), 2.0) 
 						+ Math.pow((rb.y+rb.getBBox().width/2.0) - (source.y+source.getBBox().width/2.0), 2.0));
 		
-		if(distance < 20.0)
+		if(distance < 40.0)
 			return true;
 		else
 			return false;
@@ -40,6 +40,9 @@ public class ElectricField extends ForceField
 	@Override
 	protected Vec2D calcForce(RBObject rb) 
 	{
+		if(rb instanceof Electrode)
+			return new Vec2D(0.0, 0.0);
+		
 		double comboCharge = rb.getCharge()*source.getCharge();
 		
 		double distance = 
@@ -48,7 +51,7 @@ public class ElectricField extends ForceField
 		
 		Vec2D force = new Vec2D(new Coord(rb.x+rb.getBBox().width/2.0, rb.y+rb.getBBox().width/2.0), 
 				new Coord(source.x+source.getBBox().width/2.0, source.y+source.getBBox().width/2.0));
-		force.changeMag(-1.0*comboCharge/Math.pow(distance, 2.0));
+		force.changeMag(-5.0*comboCharge/Math.pow(distance, 2.0));
 		
 		return force;
 	}

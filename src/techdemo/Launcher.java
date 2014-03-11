@@ -15,7 +15,6 @@ public class Launcher extends Actor
 	private int select = MASS;
 	
 	// Sight for aiming balls.
-	@SuppressWarnings("unused")
 	private Aim sight;
 	
 	public Launcher ()
@@ -64,21 +63,21 @@ public class Launcher extends Actor
 		
 		if(GF_Tech_Demo.checkButton(GF_Tech_Demo.KeyUp, GF_Tech_Demo.HOLD))
 		{
-			if(select == MASS && ballMass + 0.05 <= 10)
+			if(select == MASS && ballMass + 0.05 < 10.05)
 				ballMass += 0.05;
-			if(select == CHARGE && ballCharge + 0.05 <= 10)
+			if(select == CHARGE && ballCharge + 0.05 < 10.05)
 				ballCharge += 0.05;
-			if(select == SPEED && ballMass + 0.05 <= 4)
+			if(select == SPEED && ballSpeed + 0.05 < 10.5)
 				ballSpeed += 0.05;
 		}
 		
 		if(GF_Tech_Demo.checkButton(GF_Tech_Demo.KeyDown, GF_Tech_Demo.HOLD))
 		{
-			if(select == MASS && ballMass - 0.05 >= 0)
+			if(select == MASS && ballMass - 0.05 > 0)
 				ballMass -= 0.05;
-			if(select == CHARGE && ballCharge - 0.05 >= -10)
+			if(select == CHARGE && ballCharge - 0.05 > -10.05)
 				ballCharge -= 0.05;
-			if(select == SPEED && ballSpeed - 0.05 >= 0)
+			if(select == SPEED && ballSpeed - 0.05 > 0)
 				ballSpeed -= 0.05;
 		}
 	}
@@ -99,6 +98,14 @@ public class Launcher extends Actor
 		
 		if(GF_Tech_Demo.checkButton(GF_Tech_Demo.KeyShift, GF_Tech_Demo.HOLD))
 			velocity = new Vec2D(0.0, 0.0);
+	}
+	
+	@Override 
+	public void destroy()
+	{
+		sight.remove();
+		
+		super.destroy();
 	}
 	
 	class Aim extends Extension

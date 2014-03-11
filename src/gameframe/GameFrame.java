@@ -105,7 +105,7 @@ public abstract class GameFrame extends JGEngine
 	// edit the spawn mode or spawn instructions of any ActorManagers. 
 	public void manageObjects()
 	{
-		ManagerList.destroyAll();
+		// ManagerList.destroyAll();
 		ManagerList.spawnAll();
 		ManagerList.routinesAll();
 	}
