@@ -1,5 +1,11 @@
 package techdemo;
 
+/*
+ * The ElectrodeManager class is very similar to the DiamondManager, except that instead of creating
+ * Diamond objects, it creates Electrode objects. Look at the Diamond class for information about 
+ * some methods or constructor arguments. 
+ */
+
 import jgame.JGPoint;
 import gameframe.Actor;
 import gameframe.ActorManager;

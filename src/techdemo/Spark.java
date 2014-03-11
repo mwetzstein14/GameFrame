@@ -1,5 +1,11 @@
 package techdemo;
 
+/*
+ * Particle used to create spark effects when the launcher object slides too fast on the rails.
+ * Very similar to the Debris Particle. Look at the Debris Particle for information on Constructor
+ * parameters.
+ */
+
 import gameframe.*;
 
 public class Spark extends Particle 

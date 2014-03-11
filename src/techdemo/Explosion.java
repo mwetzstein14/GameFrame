@@ -1,5 +1,11 @@
 package techdemo;
 
+/*
+ * Particle used to create explosion effects when a ball object hits and destroys a Diamond.
+ * Very similar to the Debris Particle. Look at the Debris Particle for information on Constructor
+ * parameters.
+ */
+
 import gameframe.Particle;
 
 public class Explosion extends Particle 
