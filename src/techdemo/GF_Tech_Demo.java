@@ -3,6 +3,8 @@ package techdemo;
 /* This tech demo for the GameFrame framework is an example game showing how one would use the GameFrame 
  * framework. It also shows off the main features of the framework, namely the physics and object creation
  * management. 
+ * 
+ * Make sure this file is open when first running the tech demo game. 
  */
 
 // Must import JGame engine code for framework to work.
