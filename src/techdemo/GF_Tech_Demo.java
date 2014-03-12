@@ -149,9 +149,10 @@ public class GF_Tech_Demo extends GameFrame
 		if(player != null)
 			player.routine();
 		
-		super.manageObjects(); // Don't forget to call the super method at the end (as is convention). Here it
-							   // is necessary to make sure that ManagerList runs methods that manage all the
-							   // other Actors created by ActorManagers. 
+		super.manageObjects(); // Although the super method is called at the end here, it is not called
+							   // because of the convention. Here it is necessary to make sure that 
+							   // ManagerList runs methods that manage all the other Actors created 
+							   // by ActorManagers. That is not always desired.  
 	}
 	
 	// Object-object collision is done by calling checkCollision() and passing the collision IDs of the objects

@@ -95,6 +95,11 @@ public abstract class GameFrame extends JGEngine
 		currentFrame++; // Update the current number of frames that have passed.
 	}
 	
+	// The following methods, manageObjects(), collideObjects(), and collideBG(), are exceptions to
+	// the rule that the super method should be called at the end of any overridden method. One might
+	// only wish to call the super method for manageObjects(), if they desire the default 
+	// manageObjects() code to be run at the end of their manageObjects() method that overrides it.
+	
 	// This method is the first method called in do frame. Any method calls to ManagerList should be
 	// made in this method so that the doFrame() method will carry them out first. This method by
 	// default calls the destroyAll(), spawnAll, and routinesAll() methods of ManagerList, but may be
@@ -105,7 +110,7 @@ public abstract class GameFrame extends JGEngine
 	// edit the spawn mode or spawn instructions of any ActorManagers. 
 	public void manageObjects()
 	{
-		// ManagerList.destroyAll();
+		ManagerList.destroyAll();
 		ManagerList.spawnAll();
 		ManagerList.routinesAll();
 	}
