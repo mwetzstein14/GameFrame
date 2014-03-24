@@ -1,5 +1,9 @@
 package gameframe;
 
+import gameframe.vecmath.Coord;
+import gameframe.vecmath.Vec2D;
+
+
 /*
  * The Gravity class is a static class (from which objects cannot be instantiated) that is used to
  * control the acceleration due to gravity (a constant called 'g' in physics) that influences all

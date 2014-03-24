@@ -6,6 +6,8 @@ package techdemo;
 
 import jgame.JGPoint;
 import gameframe.*;
+import gameframe.rbs.Actor;
+import gameframe.vecmath.Vec2D;
 
 public class DiamondManager extends ActorManager 
 {

@@ -3,7 +3,8 @@ package techdemo;
 // Example of how the Projectile class is used. The ball is a good candidate for a Projectile 
 // because it is an object created by the Launcher class as a means to interact with other Actors.
 
-import gameframe.*;
+import gameframe.rbs.Projectile;
+import gameframe.vecmath.Vec2D;
 
 public class Ball extends Projectile
 {

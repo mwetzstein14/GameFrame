@@ -5,7 +5,8 @@ package techdemo;
  * special effect. Object is spawned when things fall apart or walls are hit by fast objects. 
  */
 
-import gameframe.*;
+import gameframe.rbs.Particle;
+import gameframe.vecmath.Vec2D;
 
 public class Debris extends Particle 
 {

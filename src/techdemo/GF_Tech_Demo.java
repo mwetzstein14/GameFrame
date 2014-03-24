@@ -10,6 +10,11 @@ package techdemo;
 // Must import JGame engine code for framework to work.
 import jgame.*;
 import gameframe.*;
+import gameframe.forcefields.ForceField;
+import gameframe.rbs.Actor;
+import gameframe.rbs.Particle;
+import gameframe.rbs.Projectile;
+import gameframe.vecmath.Vec2D;
 
 // Extend the GameFrame class instead of JGEngine for your main class. 
 public class GF_Tech_Demo extends GameFrame 

@@ -1,4 +1,6 @@
-package gameframe;
+package gameframe.rbs;
+
+import gameframe.vecmath.Vec2D;
 
 /*
  * A Pickup is an object typically found in games. Usually Pickups are used to augment or benefit

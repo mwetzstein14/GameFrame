@@ -6,7 +6,7 @@ package techdemo;
  * parameters.
  */
 
-import gameframe.Particle;
+import gameframe.rbs.Particle;
 
 public class Explosion extends Particle 
 {

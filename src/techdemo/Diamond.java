@@ -6,7 +6,8 @@ package techdemo;
  */
 
 import jgame.JGObject;
-import gameframe.*;
+import gameframe.rbs.Actor;
+import gameframe.vecmath.Vec2D;
 
 public class Diamond extends Actor 
 {

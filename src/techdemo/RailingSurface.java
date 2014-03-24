@@ -6,7 +6,10 @@ package techdemo;
  * it. Look at the SteelSurface class for explanations to some of the constructor parameters. 
  */
 
-import gameframe.*;
+import gameframe.rbs.Particle;
+import gameframe.rbs.RBObject;
+import gameframe.surface.Surface;
+import gameframe.vecmath.Vec2D;
 
 public class RailingSurface extends Surface 
 {

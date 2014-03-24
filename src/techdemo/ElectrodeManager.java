@@ -7,9 +7,9 @@ package techdemo;
  */
 
 import jgame.JGPoint;
-import gameframe.Actor;
 import gameframe.ActorManager;
-import gameframe.Vec2D;
+import gameframe.rbs.Actor;
+import gameframe.vecmath.Vec2D;
 
 public class ElectrodeManager extends ActorManager 
 {

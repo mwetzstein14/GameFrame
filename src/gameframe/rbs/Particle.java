@@ -1,4 +1,6 @@
-package gameframe;
+package gameframe.rbs;
+
+import gameframe.vecmath.Vec2D;
 
 /*
  * A Particle is an RBObject with optional physics capabilities that is intended to be a temporary

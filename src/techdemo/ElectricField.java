@@ -6,7 +6,11 @@ package techdemo;
  * RBObject associated with it (the object considered to be causing the field. 
  */
 
-import gameframe.*;
+import gameframe.forcefields.ForceField;
+import gameframe.rbs.Actor;
+import gameframe.rbs.RBObject;
+import gameframe.vecmath.Coord;
+import gameframe.vecmath.Vec2D;
 
 public class ElectricField extends ForceField 
 {
@@ -14,7 +18,8 @@ public class ElectricField extends ForceField
 	
 	public ElectricField(Actor sourceActor) 
 	{
-		super(ForceField.list.size()); // Constructor takes a unique int ID for the ForceField. 
+		super("electrodeFF"); // Constructor uses the String "electrodeFF" as the group for all
+							  // electric fields. 
 		source = sourceActor;
 	}
 

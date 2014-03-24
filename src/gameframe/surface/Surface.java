@@ -1,4 +1,9 @@
-package gameframe;
+package gameframe.surface;
+
+import gameframe.Gravity;
+import gameframe.rbs.RBObject;
+import gameframe.vecmath.Coord;
+import gameframe.vecmath.Vec2D;
 
 import java.util.ArrayList;
 

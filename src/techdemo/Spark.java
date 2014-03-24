@@ -6,7 +6,8 @@ package techdemo;
  * parameters.
  */
 
-import gameframe.*;
+import gameframe.rbs.Particle;
+import gameframe.vecmath.Vec2D;
 
 public class Spark extends Particle 
 {

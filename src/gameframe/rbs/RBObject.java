@@ -1,6 +1,13 @@
-package gameframe;
+package gameframe.rbs;
 
 // Fix constructors to set bypassTile.
+
+import gameframe.GameFrame;
+import gameframe.Gravity;
+import gameframe.forcefields.ForceField;
+import gameframe.surface.Surface;
+import gameframe.vecmath.Coord;
+import gameframe.vecmath.Vec2D;
 
 import java.util.ArrayList;
 

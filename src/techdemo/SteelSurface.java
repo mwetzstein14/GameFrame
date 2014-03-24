@@ -6,7 +6,9 @@ package techdemo;
  */
 
 import jgame.JGRectangle;
-import gameframe.*;
+import gameframe.rbs.RBObject;
+import gameframe.surface.Surface;
+import gameframe.vecmath.Vec2D;
 
 public class SteelSurface extends Surface 
 {

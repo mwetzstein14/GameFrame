@@ -1,4 +1,8 @@
-package gameframe;
+package gameframe.forcefields;
+
+import gameframe.rbs.RBObject;
+import gameframe.vecmath.Coord;
+import gameframe.vecmath.Vec2D;
 
 import java.util.ArrayList;
 
@@ -16,7 +20,12 @@ public abstract class ForceField
 	 * Only ForceFields in this ArrayList will be able to affect RBObjects, as RBObjects access
 	 * ForceFields using this static ArrayList. 
 	 */
-	protected static ArrayList<ForceField> list = new ArrayList<ForceField>();
+	public static ArrayList<ForceField> list = new ArrayList<ForceField>();
+	
+	private int fieldID; // A unique ID number for the ForceField created. Only unique among 
+						 // ForceFields in the same group.
+	private String group; // String used in identifying a ForceField object and associating it with
+						  // a group of other ForceField objects. 
 	
 	// Static method for clearing all ForceField objects out of ForceField.list.
 	public static void removeAll()
@@ -29,14 +38,14 @@ public abstract class ForceField
 	}
 	
 	// Static method for removing the ForceField object whose unique ID matches the argument passed
-	// through id.
-	public static void removeID(int id)
+	// through id and are a member of the group passed through grp.
+	public static void removeID(String grp, int id)
 	{
 		// Iterate through list backwards.
 		for(int i = list.size()-1; i >= 0; i--)
 		{
-			// Once ForceField with matching ID is found, remove it.
-			if(list.get(i).getID() == id)
+			// Once ForceField with matching group and ID is found, remove it.
+			if(list.get(i).getGroup().equals(grp) && list.get(i).getID() == id)
 			{
 				list.remove(i);
 				break; // IDs are unique for ForceFields, so it is not necessary to continue 
@@ -45,35 +54,67 @@ public abstract class ForceField
 		}
 	}
 	
-	private int fieldID; // A unique ID number for the ForceField created. If a ForceField is given
-						 // the same ID number as another ForceField already in list, then that
-						 // ForceField already in list will be removed from list. 
+	// Static method for removing all ForceField objects in the group passed through grp.
+	public static void removeGroup(String grp)
+	{
+		// Iterate through list backwards.
+		for(int i = list.size()-1; i >= 0; i--)
+		{
+			// Once ForceField with matching group is found, remove it.
+			if(list.get(i).getGroup().equals(grp))
+			{
+				list.remove(i); 
+			}
+		}
+	}
+	
+	// Static method for getting the number of ForceFields created in a given group.
+	public static int countGroup(String grp)
+	{
+		int groupCount = 0; // Used to keep track of the number of ForceFields in group grp. 
+
+		// Finds ForceFields in list with matching group, adds one to groupCount when one is found. 
+		for(int i = 0; i < list.size(); i++)
+		{
+				if(list.get(i).getGroup() == grp)
+					groupCount++;
+		}
+		
+		return groupCount; // Return the number of ForceFields in group grp found. 
+	}
 	
 	// Constructor for a ForceField. Requires that you give it an ID. Automatically adds the
 	// ForceField to ForceField.list. 
-	public ForceField(int id)
+	public ForceField(String grp)
 	{
-		fieldID = id; // Sets unique integer ID.
+		group = grp; // Sets unique integer ID.
 		
-		int index = -1; // Holds index of any ForceField in list that has a matching ID with this one.
+		int groupCount = 0; // Used to keep track of the number of ForceFields with the same group
+							// already created.
 		
-		// Finds the index of the ForceField in list that has a matching ID if there is one. 
+		// Finds ForceFields in list with matching group, adds one to groupCount when one is found. 
 		for(int i = 0; i < list.size(); i++)
 		{
-			if(list.get(i).getID() == id)
-				index = i;
+			if(list.get(i).getGroup() == grp)
+				groupCount++;
 		}
 		
-		// Removes the conflicting ForceField if there is one and adds this ForceField to list. 
-		if (index > -1)
-			list.remove(index);
-		list.add(this);
+		fieldID = groupCount; // Uses number of ForceFields already in group to assign ID. IDs start
+							  // at zero.
+		
+		list.add(this); // Add the ForceField to list. 
 	}
 	
 	// Returns the ID of the ForceField.
 	public int getID()
 	{
 		return fieldID;
+	}
+	
+	// Returns the group of the ForceField.
+	public String getGroup()
+	{
+		return group;
 	}
 	
 	// Returns the force that should be applied to the RBObject passed as an argument. 

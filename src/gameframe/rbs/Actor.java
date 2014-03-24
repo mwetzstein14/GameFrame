@@ -1,5 +1,7 @@
-package gameframe;
+package gameframe.rbs;
 
+import gameframe.GameFrame;
+import gameframe.vecmath.Vec2D;
 import jgame.JGObject;
 
 /*

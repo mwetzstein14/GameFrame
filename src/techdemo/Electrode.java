@@ -6,8 +6,8 @@ package techdemo;
  * information about some methods or constructor arguments. 
  */
 
-import gameframe.Actor;
-import gameframe.Vec2D;
+import gameframe.rbs.Actor;
+import gameframe.vecmath.Vec2D;
 
 public class Electrode extends Actor 
 {

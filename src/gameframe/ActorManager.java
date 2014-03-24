@@ -1,5 +1,8 @@
 package gameframe;
 
+import gameframe.rbs.Actor;
+import gameframe.rbs.RBObject;
+
 import java.util.ArrayList;
 
 /*

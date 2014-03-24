@@ -1,4 +1,4 @@
-package gameframe;
+package gameframe.vecmath;
 
 /*
  *  Coord is a class used to represent a point whose coordinates are decimals (type double).

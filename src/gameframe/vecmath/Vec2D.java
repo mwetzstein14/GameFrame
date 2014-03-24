@@ -1,4 +1,7 @@
-package gameframe;
+package gameframe.vecmath;
+
+
+
 
 /* 
  * The Vec2D class is a class used to represent a vector quantity (a quantity with both a magnitude

@@ -1,4 +1,6 @@
-package gameframe;
+package gameframe.rbs;
+
+import gameframe.vecmath.Vec2D;
 
 /*
  * Projectile is a class used to create objects that are created by Projectiles (typically) as a method of

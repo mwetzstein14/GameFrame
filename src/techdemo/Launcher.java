@@ -6,7 +6,9 @@ package techdemo;
  * does not affect the collisions of the Launcher. 
  */
 
-import gameframe.*;
+import gameframe.rbs.Actor;
+import gameframe.vecmath.Coord;
+import gameframe.vecmath.Vec2D;
 
 public class Launcher extends Actor 
 {
